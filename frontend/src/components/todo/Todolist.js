@@ -6,20 +6,24 @@ export default function Todolist() {
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState([]);
 
+  // useEffect(() => {
+  //   setTodos();
+  // }, []);
+
   function handleTextChange(e) {
     setInputText(e.target.value);
-    console.log(inputText);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (e != "") {
-      setTodos([
-        ...todos,
-        { text: inputText, completed: false, id: Math.random() * 1000 }, // id byttes ut med django sin backend
-      ]);
-      setInputText("");
-    }
+  function handleSubmit() {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: inputText }),
+    };
+    fetch("/backend/create-todo", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+    setInputText("");
   }
 
   return (
