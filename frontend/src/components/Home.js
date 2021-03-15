@@ -4,8 +4,8 @@ import { Grid, Typography } from "@material-ui/core";
 export default function Home() {
   return (
     <Grid container>
-      <Grid item xs={12}>
-        <Typography component="h3">Heisann</Typography>
+      <Grid container item xs={12} justify="center">
+        <Typography variant="h2">Tittel</Typography>
       </Grid>
     </Grid>
   );

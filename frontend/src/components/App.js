@@ -2,47 +2,39 @@
 
 import React from "react";
 import { render } from "react-dom";
-// importing components
+import { Paper } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Nav from "./Nav";
 import Home from "./Home";
 import Calendar from "./Calendar";
+import Todolist from "./Todolist";
 import FirstWebsite from "./FirstWebsite";
-// importing routing things
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
-import { Grid, Paper } from "@material-ui/core";
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 export default function App() {
   const theme = createMuiTheme({
     palette: {
       type: "dark",
+      primary: {
+        main: "#2196f3",
+      },
     },
   });
+
   return (
-    <ThemeProvider theme={theme}>
-      <Paper style={{ width: "100vw" }}>
-        <Router>
-          <Grid container>
-            <Grid item xs={12}>
-              <Nav />
-            </Grid>
-            <Grid item xs={12}>
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route path="/kalender" component={Calendar} />
-                <Route path="/forste-nettsted" component={FirstWebsite} />
-              </Switch>
-            </Grid>
-          </Grid>
-        </Router>
-      </Paper>
-    </ThemeProvider>
+    <Router>
+      <Switch>
+        <ThemeProvider theme={theme}>
+          <Paper style={{ minHeight: "100vh", minWidth: "100vw" }}>
+            <Nav />
+            <Route exact path="/kalender" component={Calendar} />
+            <Route exact path="/forste-nettsted" component={FirstWebsite} />
+            <Route exact path="/todo" component={Todolist} />
+            <Route exact path="/" component={Home} />
+          </Paper>
+        </ThemeProvider>
+      </Switch>
+    </Router>
   );
 }
 
