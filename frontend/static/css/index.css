@@ -23,3 +23,8 @@ body {
   height: 100%;
   display: flex;
 }
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}

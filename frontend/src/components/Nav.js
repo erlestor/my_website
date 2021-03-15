@@ -36,7 +36,7 @@ function Nav() {
           >
             Første nettsted
           </MenuItem>
-          <MenuItem onClick={handleClose} component={Link} to={"/todo"}>
+          <MenuItem onClick={handleClose} component={Link} to={"/todolist"}>
             Todo-liste
           </MenuItem>
           <MenuItem onClick={handleClose}>prosjekt 3</MenuItem>

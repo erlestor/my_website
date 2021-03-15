@@ -62,7 +62,7 @@ export default function Calendar() {
   }
 
   return (
-    <Grid container justify="center">
+    <Grid container justify="center" style={{ fontFamily: "Roboto" }}>
       <Grid item xs={6}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

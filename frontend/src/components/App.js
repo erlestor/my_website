@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Nav from "./Nav";
 import Home from "./Home";
 import Calendar from "./Calendar";
-import Todolist from "./Todolist";
+import Todolist from "./todo/Todolist";
 import FirstWebsite from "./FirstWebsite";
 
 export default function App() {
@@ -25,11 +25,11 @@ export default function App() {
     <Router>
       <Switch>
         <ThemeProvider theme={theme}>
-          <Paper style={{ minHeight: "100vh", minWidth: "100vw" }}>
+          <Paper square style={{ minHeight: "100vh", minWidth: "100vw" }}>
             <Nav />
             <Route exact path="/kalender" component={Calendar} />
             <Route exact path="/forste-nettsted" component={FirstWebsite} />
-            <Route exact path="/todo" component={Todolist} />
+            <Route exact path="/todolist" component={Todolist} />
             <Route exact path="/" component={Home} />
           </Paper>
         </ThemeProvider>

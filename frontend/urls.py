@@ -6,5 +6,5 @@ urlpatterns = [
     path('', index),
     path('kalender', index),
     path('forste-nettsted', index),
-    path('todo', index),
+    path('todolist', index),
 ]
