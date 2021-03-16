@@ -11,9 +11,16 @@ class EventView(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     
-class TodoView(generics.ListAPIView):
-    queryset = Todo.objects.all()
+class TodoView(APIView):
     serializer_class = TodoSerializer
+    
+    def get(self, request, format=None):
+        todos = []
+        queryset = Todo.objects.all()
+        for todo in queryset:
+            todos.append(TodoSerializer(todo).data)
+        return Response(todos, status=status.HTTP_200_OK)
+
 
 class CreateTodoView(APIView):
     serializer_class = CreateTodoSerializer

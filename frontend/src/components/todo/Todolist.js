@@ -6,9 +6,21 @@ export default function Todolist() {
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState([]);
 
-  // useEffect(() => {
-  //   setTodos();
-  // }, []);
+  useEffect(() => {
+    getTodos();
+  }, []);
+
+  function getTodos() {
+    fetch("/backend/todos")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setTodos(data);
+      });
+    console.log(todos);
+  }
 
   function handleTextChange(e) {
     setInputText(e.target.value);
