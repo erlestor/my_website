@@ -16,3 +16,17 @@ class CreateTodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
         fields = ('text', 'completed')
+
+class UpdateTodoSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(validators=[])
+
+    class Meta:
+        model = Todo
+        fields = ('id', 'completed')
+
+class DeleteTodoSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(validators=[])
+
+    class Meta:
+        model = Todo
+        fields = ('id')

@@ -7,8 +7,14 @@ import interactionPlugin from "@fullcalendar/interaction";
 
 export default function Calendar() {
   const initialEvents = [
-    { title: "event 1", date: "2021-03-16" },
-    { title: "event 2", date: "2021-03-18" },
+    {
+      title: "Test",
+      start: "2021-03-17",
+      end: "2021-03-19",
+      allDay: true,
+      description: "Gjør noe da",
+    },
+    { title: "event 2", date: "2021-03-19", allDay: false },
   ];
 
   const [currentEvents, setCurrentEvents] = useState(initialEvents);

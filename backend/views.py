@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import EventSerializer, TodoSerializer, CreateTodoSerializer
+from .serializers import EventSerializer, TodoSerializer, CreateTodoSerializer, UpdateTodoSerializer, DeleteTodoSerializer
 from .models import Event, Todo
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,6 +11,7 @@ class EventView(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     
+
 class TodoView(APIView):
     serializer_class = TodoSerializer
     
@@ -22,7 +23,7 @@ class TodoView(APIView):
         return Response(todos, status=status.HTTP_200_OK)
 
 
-class CreateTodoView(APIView):
+class CreateTodo(APIView):
     serializer_class = CreateTodoSerializer
 
     def post(self, request, format=None):
@@ -35,4 +36,46 @@ class CreateTodoView(APIView):
            
             return Response(TodoSerializer(todo).data, status=status.HTTP_201_CREATED)
         
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateTodo(APIView):
+    serializer_class = UpdateTodoSerializer
+    
+    def patch(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid():
+            id = serializer.data.get('id')  # tror id kan gi error
+            completed = serializer.data.get('completed')
+
+            queryset = Todo.objects.filter(id=id)
+            if not queryset.exists():
+                return Response({"msg": "Todo doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+            
+            todo = queryset[0]
+            todo.completed = completed
+            todo.save(update_fields=['completed'])
+            return Response(TodoSerializer(todo).data, status=status.HTTP_200_OK)
+
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class DeleteTodo(APIView):
+    serializer_class = UpdateTodoSerializer
+    
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid():
+            id = serializer.data.get('id')  # tror id kan gi error
+
+            queryset = Todo.objects.filter(id=id)
+            if not queryset.exists():
+                return Response({"msg": "Todo doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+            
+            todo = queryset[0]
+            todo.delete()
+            return Response({'msg': 'Delete successful'}, status=status.HTTP_200_OK)
+
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)

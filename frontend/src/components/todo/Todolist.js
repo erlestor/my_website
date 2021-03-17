@@ -8,7 +8,7 @@ export default function Todolist() {
 
   useEffect(() => {
     getTodos();
-  }, []);
+  }, []); // arrayen definerer når den skal sjekke på nytt
 
   function getTodos() {
     fetch("/backend/todos")
@@ -34,13 +34,16 @@ export default function Todolist() {
     };
     fetch("/backend/create-todo", requestOptions)
       .then((response) => response.json())
-      .then((data) => console.log(data));
-    setInputText("");
+      .then((data) => console.log(data))
+      .then(() => {
+        setInputText("");
+        getTodos();
+      });
   }
 
   return (
-    <Grid container>
-      <Grid container item justify="center" style={{ marginBottom: "20px" }}>
+    <Grid container spacing={2}>
+      <Grid container item justify="center" style={{ marginBottom: "15px" }}>
         <TextField
           label="Todo"
           variant="outlined"
@@ -53,12 +56,7 @@ export default function Todolist() {
       </Grid>
       <Grid container justify="center">
         {todos.map((todo) => (
-          <TodoItem
-            text={todo.text}
-            todo={todo}
-            todos={todos}
-            setTodos={setTodos}
-          />
+          <TodoItem todo={todo} getTodos={getTodos} />
         ))}
       </Grid>
     </Grid>

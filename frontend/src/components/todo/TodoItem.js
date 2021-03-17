@@ -9,53 +9,63 @@ import {
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-export default function TodoItem({ text, todo, todos, setTodos }) {
-  const deleteHandler = () => {
-    setTodos(todos.filter((el) => el.id !== todo.id));
-  };
+export default function TodoItem({ todo, getTodos }) {
+  function handleComplete() {
+    const requestOptions = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: todo.id, completed: !todo.completed }),
+    };
+    fetch("/backend/update-todo", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .then(() => getTodos());
+  }
 
-  const completeHandler = () => {
-    setTodos(
-      todos.map((item) => {
-        if (item.id === todo.id) {
-          return {
-            ...item,
-            completed: !item.completed,
-          };
-        }
-        return item;
-      })
-    );
-  };
+  function handleDelete() {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: todo.id }),
+    };
+    fetch("/backend/delete-todo", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .then(() => getTodos());
+  }
 
   return (
-    <Grid container item justify="center" alignItems="center">
-      <Paper>
+    <Grid container justify="center">
+      <Paper style={{ margin: "10px" }} elevation={3}>
         <Grid container direction="row">
-          <Typography
-            variant="h6"
-            className={todo.completed ? "completed" : ""}
-          >
-            {text}
-          </Typography>
-          <ButtonGroup>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<DoneIcon />}
-              onClick={completeHandler}
+          <Grid item xs={6}>
+            <Typography
+              variant="h6"
+              className={todo.completed ? "completed" : ""}
             >
-              Completed
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              startIcon={<DeleteIcon />}
-              onClick={deleteHandler}
-            >
-              Delete
-            </Button>
-          </ButtonGroup>
+              {todo.text}
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <ButtonGroup>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<DoneIcon />}
+                onClick={handleComplete}
+              >
+                Completed
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<DeleteIcon />}
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+            </ButtonGroup>
+          </Grid>
         </Grid>
       </Paper>
     </Grid>
