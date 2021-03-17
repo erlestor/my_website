@@ -21,9 +21,7 @@ export default function Calendar() {
   const [eventId, setEventId] = useState(1);
 
   function createEventId() {
-    setEventId((eventId) => {
-      return ++eventId;
-    });
+    setEventId((eventId) => ++eventId);
     return eventId;
   }
 
