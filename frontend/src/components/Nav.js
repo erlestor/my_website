@@ -14,7 +14,7 @@ function Nav() {
   };
 
   return (
-    <Grid container justify="center" style={{ marginBottom: "20px" }}>
+    <Grid container justify="center" style={{ marginBottom: "15px" }}>
       <ButtonGroup variant="text">
         <Link to="/">
           <Button>Hjem</Button>
@@ -34,7 +34,7 @@ function Nav() {
             component={Link}
             to={"/forste-nettsted"}
           >
-            Første nettsted
+            it1 nettsted
           </MenuItem>
           <MenuItem onClick={handleClose} component={Link} to={"/todolist"}>
             Todo-liste

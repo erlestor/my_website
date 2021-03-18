@@ -10,7 +10,28 @@ from rest_framework.response import Response
 class EventView(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    
+
+
+class CreateEvent(APIView):
+    serializer_class = EventSerializer
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            title = serializer.data.get('title')
+            description = serializer.data.get('description')
+            start = serializer.data.get('start')
+            end = serializer.data.get('end')
+            allDay = serializer.data.get('allDay')
+
+            event = Event(title=title, description=description, start=start, end=end, allDay=allDay)
+            event.save()
+           
+            return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
+        
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class TodoView(APIView):
     serializer_class = TodoSerializer
