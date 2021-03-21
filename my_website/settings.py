@@ -111,11 +111,13 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'CET'
 
+DATETIME_FORMAT = '%d-%m-%Y %H:%M' 
+
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -123,4 +125,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-DATETIME_FORMAT = '%d-%m-%Y %H:%M' 
+

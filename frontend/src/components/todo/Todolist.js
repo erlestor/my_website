@@ -42,8 +42,8 @@ export default function Todolist() {
   }
 
   return (
-    <Grid container spacing={2}>
-      <Grid container item justify="center" style={{ marginBottom: "15px" }}>
+    <Grid container spacing={6} justify="center" align="center">
+      <Grid container item xs={12} justify="center">
         <TextField
           label="Todo"
           variant="outlined"
@@ -54,7 +54,7 @@ export default function Todolist() {
           Legg til
         </Button>
       </Grid>
-      <Grid container justify="center">
+      <Grid item>
         {todos.map((todo) => (
           <TodoItem todo={todo} getTodos={getTodos} />
         ))}

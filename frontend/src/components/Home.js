@@ -4,7 +4,7 @@ import { Grid, Typography } from "@material-ui/core";
 export default function Home() {
   return (
     <Grid container>
-      <Grid container item xs={12} justify="center">
+      <Grid item xs={12} align="center">
         <Typography variant="h2">Hjemmeside</Typography>
       </Grid>
     </Grid>

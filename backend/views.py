@@ -7,9 +7,17 @@ from rest_framework.response import Response
 
 # Create your views here.
 
-class EventView(generics.ListAPIView):
-    queryset = Event.objects.all()
+class EventView(APIView):
     serializer_class = EventSerializer
+    
+    def get(self, request, format=None):
+        events = []
+        queryset = Event.objects.all()
+        for event in queryset:
+            if event.end.exists():
+                return Response({"msg": "woooo d funke kanskje"}, status=status.HTTP_200_OK)
+            events.append(EventSerializer(event).data)
+        return Response(events, status=status.HTTP_200_OK)
 
 
 class CreateEvent(APIView):

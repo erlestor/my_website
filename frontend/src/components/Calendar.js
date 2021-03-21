@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -6,19 +6,24 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 export default function Calendar() {
-  const initialEvents = [
-    {
-      title: "Test",
-      start: "2021-03-17",
-      end: "2021-03-19",
-      allDay: true,
-      description: "Gjør noe da",
-    },
-    { title: "event 2", date: "2021-03-19", allDay: false },
-  ];
-
-  const [currentEvents, setCurrentEvents] = useState(initialEvents);
+  const [currentEvents, setCurrentEvents] = useState([]);
   const [eventId, setEventId] = useState(1);
+
+  useEffect(() => {
+    getEvents();
+  }, []);
+
+  function getEvents() {
+    fetch("/backend/events")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setCurrentEvents(data);
+      });
+    console.log(currentEvents);
+  }
 
   function createEventId() {
     setEventId((eventId) => ++eventId);

@@ -35,39 +35,40 @@ export default function TodoItem({ todo, getTodos }) {
   }
 
   return (
-    <Grid container justify="center">
-      <Paper style={{ margin: "10px" }} elevation={3}>
-        <Grid container direction="row">
-          <Grid item xs={6}>
-            <Typography
-              variant="h6"
-              className={todo.completed ? "completed" : ""}
-            >
-              {todo.text}
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <ButtonGroup>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<DoneIcon />}
-                onClick={handleComplete}
-              >
-                Completed
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<DeleteIcon />}
-                onClick={handleDelete}
-              >
-                Delete
-              </Button>
-            </ButtonGroup>
-          </Grid>
-        </Grid>
-      </Paper>
-    </Grid>
+    <Paper
+      style={{
+        margin: "10px",
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "5px",
+      }}
+      elevation={3}
+    >
+      <Typography
+        variant="h6"
+        className={todo.completed ? "completed" : ""}
+        style={{ marginRight: "15px" }}
+      >
+        {todo.text}
+      </Typography>
+      <ButtonGroup>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<DoneIcon />}
+          onClick={handleComplete}
+        >
+          Completed
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<DeleteIcon />}
+          onClick={handleDelete}
+        >
+          Delete
+        </Button>
+      </ButtonGroup>
+    </Paper>
   );
 }
