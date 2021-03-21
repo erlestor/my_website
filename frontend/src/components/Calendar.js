@@ -9,22 +9,6 @@ export default function Calendar() {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [eventId, setEventId] = useState(1);
 
-  useEffect(() => {
-    getEvents();
-  }, []);
-
-  function getEvents() {
-    fetch("/backend/events")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setCurrentEvents(data);
-      });
-    console.log(currentEvents);
-  }
-
   function createEventId() {
     setEventId((eventId) => ++eventId);
     return eventId;
@@ -84,7 +68,7 @@ export default function Calendar() {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={currentEvents}
+          events={"/backend/events"}
           select={handleDateSelect}
           eventContent={renderEventContent} // custom render function
           eventClick={handleEventClick}

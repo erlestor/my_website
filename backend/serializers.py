@@ -6,6 +6,11 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = ('id', 'title', 'description', 'start', 'end', 'allDay')
 
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('id', 'title', 'description', 'start', 'end', 'allDay')
+
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo

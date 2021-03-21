@@ -14,8 +14,6 @@ class EventView(APIView):
         events = []
         queryset = Event.objects.all()
         for event in queryset:
-            if event.end.exists():
-                return Response({"msg": "woooo d funke kanskje"}, status=status.HTTP_200_OK)
             events.append(EventSerializer(event).data)
         return Response(events, status=status.HTTP_200_OK)
 
@@ -38,6 +36,26 @@ class CreateEvent(APIView):
            
             return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
         
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteEvent(APIView):
+    serializer_class = EventSerializer
+    
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid():
+            id = serializer.data.get('id')  # tror id kan gi error
+
+            queryset = Event.objects.filter(id=id)
+            if not queryset.exists():
+                return Response({"msg": "Event doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+            
+            event = queryset[0]
+            event.delete()
+            return Response({'msg': 'Delete successful'}, status=status.HTTP_200_OK)
+
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
 
 

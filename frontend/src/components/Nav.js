@@ -1,5 +1,15 @@
 import React from "react";
-import { Button, ButtonGroup, Grid, Menu, MenuItem } from "@material-ui/core";
+import {
+  Button,
+  ButtonGroup,
+  Grid,
+  Menu,
+  MenuItem,
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 function Nav() {
@@ -14,8 +24,8 @@ function Nav() {
   };
 
   return (
-    <Grid container justify="center" style={{ marginBottom: "15px" }}>
-      <ButtonGroup variant="text">
+    <AppBar position="static" style={{ marginBottom: "20px" }}>
+      <Toolbar>
         <Link to="/">
           <Button>Hjem</Button>
         </Link>
@@ -41,8 +51,8 @@ function Nav() {
           </MenuItem>
           <MenuItem onClick={handleClose}>prosjekt 3</MenuItem>
         </Menu>
-      </ButtonGroup>
-    </Grid>
+      </Toolbar>
+    </AppBar>
   );
 }
 
