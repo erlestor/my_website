@@ -6,10 +6,12 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = ('id', 'title', 'description', 'start', 'end', 'allDay')
 
-class EventSerializer(serializers.ModelSerializer):
+class DeleteEventSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(validators=[])
+    
     class Meta:
         model = Event
-        fields = ('id', 'title', 'description', 'start', 'end', 'allDay')
+        fields = ('id', 'allDay')
 
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,10 +30,3 @@ class UpdateTodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
         fields = ('id', 'completed')
-
-class DeleteTodoSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(validators=[])
-
-    class Meta:
-        model = Todo
-        fields = ('id')

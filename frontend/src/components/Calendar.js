@@ -1,11 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import {
+  Grid,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Slide,
+} from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function Calendar() {
+  // copy paste dialog greier
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [lastClickedEvent, setLastClickedEvent] = React.useState(0);
+
+  const handleAlertOpen = () => {
+    setOpenAlert(true);
+  };
+
+  const handleAlertClose = () => {
+    setOpenAlert(false);
+  };
+
   const [currentEvents, setCurrentEvents] = useState([]);
   const [eventId, setEventId] = useState(1);
 
@@ -32,13 +55,20 @@ export default function Calendar() {
   };
 
   const handleEventClick = (clickInfo) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
-      )
-    ) {
-      clickInfo.event.remove();
-    }
+    setLastClickedEvent(clickInfo.event.id);
+    handleAlertOpen();
+  };
+
+  const deleteEvent = () => {
+    setOpenAlert(false);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: lastClickedEvent }),
+    };
+    fetch("/backend/delete-event", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   };
 
   const handleEvents = (events) => {
@@ -79,6 +109,24 @@ export default function Calendar() {
             eventRemove={function(){}}
             */
         />
+        <Dialog
+          open={openAlert}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleAlertClose}
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {"Delete event?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleAlertClose} color="primary">
+              Disagree
+            </Button>
+            <Button onClick={deleteEvent} color="primary">
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </Grid>
   );

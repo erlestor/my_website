@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import EventSerializer, TodoSerializer, CreateTodoSerializer, UpdateTodoSerializer, DeleteTodoSerializer
+from .serializers import EventSerializer, DeleteEventSerializer, TodoSerializer, CreateTodoSerializer, UpdateTodoSerializer
 from .models import Event, Todo
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -40,7 +40,7 @@ class CreateEvent(APIView):
 
 
 class DeleteEvent(APIView):
-    serializer_class = EventSerializer
+    serializer_class = DeleteEventSerializer
     
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.data)
