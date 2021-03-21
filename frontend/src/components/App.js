@@ -14,7 +14,7 @@ import FirstWebsite from "./FirstWebsite";
 export default function App() {
   const theme = createMuiTheme({
     palette: {
-      type: "dark",
+      type: "light",
       primary: {
         main: "#2196f3",
       },
