@@ -56,7 +56,7 @@ export default function Calendar() {
 
   const handleEventClick = (clickInfo) => {
     setLastClickedEvent(clickInfo.event.id);
-    handleAlertOpen();
+    setOpenAlert(true);
   };
 
   const deleteEvent = () => {
