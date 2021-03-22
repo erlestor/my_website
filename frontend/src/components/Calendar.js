@@ -71,6 +71,23 @@ export default function Calendar() {
       .then((data) => console.log(data));
   };
 
+  const addEvent = (event) => {
+    console.log(event.event.title);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: event.event.title,
+        start: event.event.start,
+        end: event.event.end,
+        allDay: event.event.allDay,
+      }),
+    };
+    fetch("/backend/create-event", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
+
   const handleEvents = (events) => {
     setCurrentEvents(events);
   };
@@ -103,6 +120,7 @@ export default function Calendar() {
           eventContent={renderEventContent} // custom render function
           eventClick={handleEventClick}
           eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+          eventAdd={addEvent}
           /* you can update a remote database when these fire:
             eventAdd={function(){}}
             eventChange={function(){}}

@@ -4,8 +4,8 @@ from django.db import models
 class Event(models.Model):
     # tror id blir autogenerert faktisk
     title = models.CharField(max_length=50, null=False)
-    description = models.CharField(max_length=200, null=True)
-    start = models.DateTimeField()
+    description = models.CharField(max_length=200, default="")
+    start = models.DateTimeField(null=False)
     end = models.DateTimeField(null=True)
     allDay = models.BooleanField(default=True)
 
