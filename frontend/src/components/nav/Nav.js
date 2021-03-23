@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   dropdownContent: {
     display: "block",
     position: "absolute",
-    minWidth: "160px",
+    minWidth: "170px",
     zIndex: "1",
     backgroundColor: "#1f2041",
   },
@@ -55,8 +55,13 @@ function Nav() {
         </NavLink>
         <DropDown
           classes={classes}
-          name="prosjekt"
-          items={{ name: "KALENDER", link: "/kalender" }}
+          name="PROSJEKTER"
+          link="prosjekt"
+          items={[
+            { name: "KALENDER", link: "kalender" },
+            { name: "TODOLISTE", link: "todolist" },
+            { name: "FØRSTE NETTSTED", link: "forste-nettsted" },
+          ]}
         />
       </Toolbar>
     </AppBar>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Typography } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 
-export default function DropDown({ classes }) {
+export default function DropDown({ classes, name, link, items }) {
   const [showDropdown, setShowDowndown] = React.useState(false);
 
   return (
@@ -13,38 +13,24 @@ export default function DropDown({ classes }) {
       onClick={() => setShowDowndown(false)}
     >
       <NavLink
-        to="/prosjekt"
+        to={"/" + link}
         className={classes.navlink}
         activeClassName={classes.active}
       >
-        <Typography className={classes.navlink}>PROSJEKTER</Typography>
+        <Typography className={classes.navlink}>{name}</Typography>
       </NavLink>
       {showDropdown && (
         <div className={classes.dropdownContent}>
-          <NavLink
-            exact
-            to="/prosjekt/kalender"
-            className={classes.navlink}
-            activeClassName={classes.active}
-          >
-            <Typography className={classes.navlink}>KALENDER</Typography>
-          </NavLink>
-          <NavLink
-            exact
-            to="/prosjekt/todolist"
-            className={classes.navlink}
-            activeClassName={classes.active}
-          >
-            <Typography className={classes.navlink}>TODOLISTE</Typography>
-          </NavLink>
-          <NavLink
-            exact
-            to="/prosjekt/forste-nettsted"
-            className={classes.navlink}
-            activeClassName={classes.active}
-          >
-            <Typography className={classes.navlink}>IT1 NETTSTED</Typography>
-          </NavLink>
+          {items.map((item) => (
+            <NavLink
+              exact
+              to={"/prosjekt/" + item.link}
+              className={classes.navlink}
+              activeClassName={classes.active}
+            >
+              <Typography className={classes.navlink}>{item.name}</Typography>
+            </NavLink>
+          ))}
         </div>
       )}
     </div>
