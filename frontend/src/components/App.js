@@ -2,7 +2,7 @@
 
 import React from "react";
 import { render } from "react-dom";
-import { Paper } from "@material-ui/core";
+import { Paper, Grid } from "@material-ui/core";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Nav from "./Nav";
@@ -16,7 +16,10 @@ export default function App() {
     palette: {
       type: "light",
       primary: {
-        main: "#2196f3",
+        main: "#1f2041",
+      },
+      secondary: {
+        main: "#ffc857",
       },
     },
   });
@@ -25,7 +28,15 @@ export default function App() {
     <Router>
       <Switch>
         <ThemeProvider theme={theme}>
-          <Paper square style={{ minHeight: "100vh", minWidth: "100vw" }}>
+          <Paper
+            square
+            style={{
+              width: "100vw",
+              minHeight: "100vh",
+              overflowY: "auto",
+              overflowX: "hidden",
+            }}
+          >
             <Nav />
             <Route exact path="/kalender" component={Calendar} />
             <Route exact path="/forste-nettsted" component={FirstWebsite} />

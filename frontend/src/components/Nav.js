@@ -1,18 +1,30 @@
 import React from "react";
 import {
   Button,
-  ButtonGroup,
-  Grid,
   Menu,
   MenuItem,
   AppBar,
   Toolbar,
   Typography,
-  IconButton,
 } from "@material-ui/core";
+import { makeStyles, createStyles, styled } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
+const useStyles = makeStyles({
+  navlink: {
+    fontSize: "15px",
+    margin: "10px",
+    color: "#b0aca5",
+    "&:hover": {
+      color: "white",
+      cursor: "pointer",
+    },
+  },
+});
+
 function Nav() {
+  const classes = useStyles();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -24,32 +36,38 @@ function Nav() {
   };
 
   return (
-    <AppBar position="static" style={{ marginBottom: "20px" }}>
-      <Toolbar>
+    <AppBar
+      position="sticky"
+      style={{
+        marginBottom: "20px",
+      }}
+    >
+      <Toolbar style={{ display: "flex", justifyContent: "center" }}>
         <Link to="/">
-          <Button>Hjem</Button>
+          <Typography className={classes.navlink}>HJEM</Typography>
         </Link>
-        <Link to="/kalender">
-          <Button>Kalender</Button>
-        </Link>
-        <Button onClick={handleClick}>Prosjekter</Button>
+        <Typography className={classes.navlink} onClick={handleClick}>
+          PROSJEKTER
+        </Typography>
         <Menu
           anchorEl={anchorEl}
           keepMounted
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
+          <MenuItem onClick={handleClose} component={Link} to={"/kalender"}>
+            KALENDER
+          </MenuItem>
           <MenuItem
             onClick={handleClose}
             component={Link}
             to={"/forste-nettsted"}
           >
-            it1 nettsted
+            IT1 NETTSTED
           </MenuItem>
           <MenuItem onClick={handleClose} component={Link} to={"/todolist"}>
-            Todo-liste
+            TODO-LISTE
           </MenuItem>
-          <MenuItem onClick={handleClose}>prosjekt 3</MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>
