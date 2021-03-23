@@ -1,5 +1,4 @@
 // HELE IDEEN ER Å IKKE RØRE DENNE TROR JEG
-
 import React from "react";
 import { render } from "react-dom";
 import { Paper, Grid } from "@material-ui/core";
