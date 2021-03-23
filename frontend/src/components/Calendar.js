@@ -123,6 +123,7 @@ export default function Calendar() {
           eventClick={handleEventClick}
           eventsSet={handleEvents} // called after events are initialized/added/changed/removed
           eventAdd={addEvent}
+          eventRemove={deleteEvent}
           /* you can update a remote database when these fire:
             eventAdd={function(){}}
             eventChange={function(){}}
