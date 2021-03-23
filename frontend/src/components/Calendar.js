@@ -11,6 +11,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import nbLocale from "@fullcalendar/core/locales/nb";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -111,6 +112,7 @@ export default function Calendar() {
             center: "title",
             right: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
+          locale={nbLocale}
           editable={true}
           selectable={true}
           selectMirror={true}
