@@ -6,6 +6,14 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = ('id', 'title', 'description', 'start', 'end', 'allDay')
 
+class UpdateEventSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(validators=[])
+    
+    class Meta:
+        model = Event
+        fields = ('id', 'title', 'description', 'start', 'end', 'allDay')
+
+
 class DeleteEventSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(validators=[])
     

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import EventSerializer, DeleteEventSerializer, TodoSerializer, CreateTodoSerializer, UpdateTodoSerializer
+from .serializers import EventSerializer, DeleteEventSerializer, UpdateEventSerializer, TodoSerializer, CreateTodoSerializer, UpdateTodoSerializer
 from .models import Event, Todo
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -36,6 +36,36 @@ class CreateEvent(APIView):
             return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
         
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateEvent(APIView):
+    serializer_class = UpdateEventSerializer
+    
+    def patch(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid():
+            id = serializer.data.get('id')
+            title = serializer.data.get('title')
+            start = serializer.data.get('start')
+            end = serializer.data.get('end')
+            allDay = serializer.data.get('allDay')
+
+
+            queryset = Event.objects.filter(id=id)
+            if not queryset.exists():
+                return Response({"msg": "Event doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+            
+            event = queryset[0]
+            event.title = title
+            event.start = start
+            event.end = end
+            event.allDay = allDay
+            event.save(update_fields=['title', 'start', 'end', 'allDay'])
+            return Response(UpdateEventSerializer(event).data, status=status.HTTP_200_OK)
+
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class DeleteEvent(APIView):
     serializer_class = DeleteEventSerializer

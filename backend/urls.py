@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import EventView, CreateEvent, DeleteEvent, TodoView, CreateTodo, UpdateTodo, DeleteTodo
+from .views import EventView, CreateEvent, DeleteEvent, UpdateEvent, TodoView, CreateTodo, UpdateTodo, DeleteTodo
 
 urlpatterns = [
     # hvert element blir på formen:
@@ -10,5 +10,6 @@ urlpatterns = [
     path('delete-todo', DeleteTodo.as_view()),
     path('events', EventView.as_view()),
     path('create-event', CreateEvent.as_view()),
+    path('update-event', UpdateEvent.as_view()),
     path('delete-event', DeleteEvent.as_view()),
 ]

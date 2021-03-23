@@ -31,12 +31,6 @@ export default function Calendar() {
   };
 
   const [currentEvents, setCurrentEvents] = useState([]);
-  const [eventId, setEventId] = useState(1);
-
-  function createEventId() {
-    setEventId((eventId) => ++eventId);
-    return eventId;
-  }
 
   const handleDateSelect = (selectInfo) => {
     let title = prompt("Please enter a new title for your event");
@@ -46,7 +40,6 @@ export default function Calendar() {
 
     if (title) {
       calendarApi.addEvent({
-        id: createEventId(),
         title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,
@@ -89,6 +82,24 @@ export default function Calendar() {
       .then((data) => console.log(data));
   };
 
+  const updateEvent = (event) => {
+    const requestOptions = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: event.event.id,
+        title: event.event.title,
+        description: event.event.description,
+        start: event.event.start,
+        end: event.event.end,
+        allDay: event.event.allDay,
+      }),
+    };
+    fetch("/backend/update-event", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
+
   const handleEvents = (events) => {
     setCurrentEvents(events);
   };
@@ -123,6 +134,7 @@ export default function Calendar() {
           eventClick={handleEventClick}
           eventsSet={handleEvents} // called after events are initialized/added/changed/removed
           eventAdd={addEvent}
+          eventChange={updateEvent}
           eventRemove={deleteEvent}
           /* you can update a remote database when these fire:
             eventAdd={function(){}}
