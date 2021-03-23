@@ -5,8 +5,9 @@ import { render } from "react-dom";
 import { Paper, Grid } from "@material-ui/core";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Nav from "./Nav";
+import Nav from "./nav/Nav";
 import Home from "./Home";
+import Projects from "./Projects";
 import Calendar from "./Calendar";
 import Todolist from "./todo/Todolist";
 import FirstWebsite from "./FirstWebsite";
@@ -38,9 +39,14 @@ export default function App() {
             }}
           >
             <Nav />
-            <Route exact path="/kalender" component={Calendar} />
-            <Route exact path="/forste-nettsted" component={FirstWebsite} />
-            <Route exact path="/todolist" component={Todolist} />
+            <Route exact path="/prosjekt/kalender" component={Calendar} />
+            <Route
+              exact
+              path="/prosjekt/forste-nettsted"
+              component={FirstWebsite}
+            />
+            <Route exact path="/prosjekt/todolist" component={Todolist} />
+            <Route exact path="/prosjekt" component={Projects} />
             <Route exact path="/" component={Home} />
           </Paper>
         </ThemeProvider>
