@@ -28,7 +28,7 @@ export default function DropDown({ classes, name, link, items }) {
               className={classes.navlink}
               activeClassName={classes.active}
             >
-              <Typography className={classes.navlink}>{item.name}</Typography>
+              <Typography>{item.name}</Typography>
             </NavLink>
           ))}
         </div>

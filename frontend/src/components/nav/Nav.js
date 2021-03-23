@@ -39,9 +39,9 @@ function Nav() {
 
   return (
     <AppBar
-      position="sticky"
       style={{
         marginBottom: "20px",
+        position: "sticky",
       }}
     >
       <Toolbar style={{ display: "flex", justifyContent: "center" }}>

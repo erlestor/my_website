@@ -136,11 +136,6 @@ export default function Calendar() {
           eventAdd={addEvent}
           eventChange={updateEvent}
           eventRemove={deleteEvent}
-          /* you can update a remote database when these fire:
-            eventAdd={function(){}}
-            eventChange={function(){}}
-            eventRemove={function(){}}
-            */
         />
         <Dialog
           open={openAlert}

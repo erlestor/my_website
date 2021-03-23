@@ -3,8 +3,13 @@ import { Grid, Typography } from "@material-ui/core";
 
 export default function Project() {
   return (
-    <Grid container justify="center">
-      <Typography variant="h2">Prosjekter</Typography>
+    <Grid container align="center" direction="column" spacing={5}>
+      <Grid item xs={12}>
+        <Typography variant="h2">Prosjekter</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography>En oversikt over prosjekter</Typography>
+      </Grid>
     </Grid>
   );
 }
