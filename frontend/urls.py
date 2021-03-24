@@ -9,5 +9,6 @@ urlpatterns = [
     path('prosjekt/kalender', index),
     path('prosjekt/todolist', index),
     path('prosjekt/forste-nettsted', index),
+    path('prosjekt/musikk-lobby', index),
     path('prosjekt', index),
 ]

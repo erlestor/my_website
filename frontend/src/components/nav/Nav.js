@@ -61,6 +61,7 @@ function Nav() {
             { name: "FØRSTE NETTSTED", link: "forste-nettsted" },
             { name: "TODOLISTE", link: "todolist" },
             { name: "KALENDER", link: "kalender" },
+            { name: "MUSIKK LOBBY", link: "musikk-lobby" },
           ]}
         />
       </Toolbar>

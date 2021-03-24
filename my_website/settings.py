@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'backend.apps.BackendConfig',
     'frontend.apps.FrontendConfig',
+    'room_backend.apps.RoomBackendConfig',
+    'spotify.apps.SpotifyConfig',
     # LEGG TIL APP HER HVER GANG DU LAGER EN NY DJANGO APP
 ]
 
