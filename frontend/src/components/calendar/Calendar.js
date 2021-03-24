@@ -1,34 +1,16 @@
-import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Slide,
-} from "@material-ui/core";
+import React, { useState } from "react";
+import { Grid } from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import nbLocale from "@fullcalendar/core/locales/nb";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DeleteDialog from "./DeleteDialog";
 
 export default function Calendar() {
   // copy paste dialog greier
   const [openAlert, setOpenAlert] = React.useState(false);
-  const [lastClickedEvent, setLastClickedEvent] = React.useState(0);
-
-  const handleAlertOpen = () => {
-    setOpenAlert(true);
-  };
-
-  const handleAlertClose = () => {
-    setOpenAlert(false);
-  };
+  const [lastClickedEvent, setLastClickedEvent] = React.useState({});
 
   const [currentEvents, setCurrentEvents] = useState([]);
 
@@ -46,23 +28,6 @@ export default function Calendar() {
         allDay: selectInfo.allDay,
       });
     }
-  };
-
-  const handleEventClick = (clickInfo) => {
-    setLastClickedEvent(clickInfo.event.id);
-    setOpenAlert(true);
-  };
-
-  const deleteEvent = () => {
-    setOpenAlert(false);
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: lastClickedEvent }),
-    };
-    fetch("/backend/delete-event", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
   };
 
   const addEvent = (event) => {
@@ -100,6 +65,27 @@ export default function Calendar() {
       .then((data) => console.log(data));
   };
 
+  const handleEventClick = (clickInfo) => {
+    setLastClickedEvent(clickInfo.event);
+    setOpenAlert(true);
+  };
+
+  const handleDeleteEvent = () => {
+    setOpenAlert(false);
+    lastClickedEvent.remove();
+  };
+
+  const deleteEvent = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: lastClickedEvent.id }),
+    };
+    fetch("/backend/delete-event", requestOptions)
+      .then((response) => response.json())
+      .then((data) => setLastClickedEvent({}));
+  };
+
   const handleEvents = (events) => {
     setCurrentEvents(events);
   };
@@ -115,7 +101,7 @@ export default function Calendar() {
 
   return (
     <Grid container justify="center" style={{ fontFamily: "Roboto" }}>
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -137,24 +123,11 @@ export default function Calendar() {
           eventChange={updateEvent}
           eventRemove={deleteEvent}
         />
-        <Dialog
-          open={openAlert}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleAlertClose}
-        >
-          <DialogTitle id="alert-dialog-slide-title">
-            {"Delete event?"}
-          </DialogTitle>
-          <DialogActions>
-            <Button onClick={handleAlertClose} color="primary">
-              Disagree
-            </Button>
-            <Button onClick={deleteEvent} color="primary">
-              Agree
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <DeleteDialog
+          openAlert={openAlert}
+          setOpenAlert={setOpenAlert}
+          handleDeleteEvent={handleDeleteEvent}
+        />
       </Grid>
     </Grid>
   );

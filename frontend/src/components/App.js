@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Nav from "./nav/Nav";
 import Home from "./Home";
 import Projects from "./Projects";
-import Calendar from "./Calendar";
+import Calendar from "./calendar/Calendar";
 import Todolist from "./todo/Todolist";
 import FirstWebsite from "./FirstWebsite";
 
