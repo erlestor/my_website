@@ -81,7 +81,7 @@ export default class HomePage extends Component {
       <div>
         <Route
           exact
-          path="/prosjekt/musikk-lobby/join"
+          path="/prosjekt/musikk-lobby"
           render={() => {
             return this.state.roomCode ? (
               <Redirect
