@@ -47,7 +47,7 @@ export default function App() {
               path="/prosjekt/forste-nettsted"
               component={FirstWebsite}
             />
-            <Route exact path="/prosjekt/musikk-lobby" component={HomePage} />
+            <Route path="/prosjekt/musikk-lobby" component={HomePage} />
             <Route exact path="/prosjekt/todolist" component={Todolist} />
             <Route exact path="/prosjekt" component={Projects} />
             <Route exact path="/" component={Home} />

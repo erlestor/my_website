@@ -34,7 +34,7 @@ export default class Room extends Component {
   }
 
   getRoomDetails() {
-    return fetch("/api/get-room" + "?code=" + this.roomCode)
+    return fetch("/room_backend/get-room" + "?code=" + this.roomCode)
       .then((response) => {
         if (!response.ok) {
           this.props.leaveRoomCallback();
@@ -90,9 +90,9 @@ export default class Room extends Component {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     };
-    fetch("/api/leave-room", requestOptions).then((_response) => {
+    fetch("/room_backend/leave-room", requestOptions).then((_response) => {
       this.props.leaveRoomCallback();
-      this.props.history.push("/");
+      this.props.history.push("/prosjekt/musikk-lobby");
     });
   }
 

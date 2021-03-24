@@ -59,7 +59,9 @@ export default class CreateRoomPage extends Component {
     };
     fetch("/room_backend/create-room", requestOptions)
       .then((response) => response.json())
-      .then((data) => this.props.history.push("/room/" + data.code));
+      .then((data) =>
+        this.props.history.push("/prosjekt/musikk-lobby/room/" + data.code)
+      );
   }
 
   handleUpdateButtonPressed() {

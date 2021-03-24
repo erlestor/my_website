@@ -75,9 +75,7 @@ export default class HomePage extends Component {
           path="/prosjekt/musikk-lobby"
           render={() => {
             return this.state.roomCode ? (
-              <Redirect
-                to={`prosjekt/musikk-lobby/room/${this.state.roomCode}`}
-              />
+              <Redirect to={`musikk-lobby/room/${this.state.roomCode}`} />
             ) : (
               this.renderHomePage()
             );

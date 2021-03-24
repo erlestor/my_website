@@ -42,7 +42,12 @@ export default class RoomJoinPage extends Component {
           </Button>
         </Grid>
         <Grid item xs={12} align="center">
-          <Button variant="contained" color="secondary" to="/" component={Link}>
+          <Button
+            variant="contained"
+            color="secondary"
+            to="./"
+            component={Link}
+          >
             Back
           </Button>
         </Grid>
@@ -64,10 +69,12 @@ export default class RoomJoinPage extends Component {
         code: this.state.roomCode,
       }),
     };
-    fetch("/api/join-room", requestOptions)
+    fetch("/room_backend/join-room", requestOptions)
       .then((response) => {
         if (response.ok) {
-          this.props.history.push(`/room/${this.state.roomCode}`);
+          this.props.history.push(
+            `/prosjekt/musikk-lobby/room/${this.state.roomCode}`
+          );
         } else {
           this.setState({ error: "Room not found." });
         }
