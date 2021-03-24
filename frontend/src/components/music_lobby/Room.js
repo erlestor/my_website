@@ -146,13 +146,13 @@ export default class Room extends Component {
       return this.renderSettings();
     }
     return (
-      <Grid container spacing={1}>
+      <Grid container spacing={1} justify="center" align="center">
         <Grid item xs={12} align="center">
           <Typography variant="h4" component="h4">
             Code: {this.roomCode}
           </Typography>
         </Grid>
-        <Grid item xs={12} align="center">
+        <Grid item xs={12} sm={8}>
           <MusicPlayer {...this.state.song} />
         </Grid>
         {this.state.isHost ? this.renderSettingsButton() : null}

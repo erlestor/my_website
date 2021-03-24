@@ -13,5 +13,6 @@ urlpatterns = [
     path('prosjekt/musikk-lobby/info', index),
     path('prosjekt/musikk-lobby/create', index),
     path('prosjekt/musikk-lobby/join', index),
+    path('prosjekt/musikk-lobby/room/<str:roomCode>', index),
     path('prosjekt', index),
 ]
