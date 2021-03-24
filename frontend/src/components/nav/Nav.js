@@ -58,9 +58,9 @@ function Nav() {
           name="PROSJEKTER"
           link="prosjekt"
           items={[
-            { name: "KALENDER", link: "kalender" },
-            { name: "TODOLISTE", link: "todolist" },
             { name: "FØRSTE NETTSTED", link: "forste-nettsted" },
+            { name: "TODOLISTE", link: "todolist" },
+            { name: "KALENDER", link: "kalender" },
           ]}
         />
       </Toolbar>
