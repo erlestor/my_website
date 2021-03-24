@@ -57,7 +57,7 @@ export default class CreateRoomPage extends Component {
         guest_can_pause: this.state.guestCanPause,
       }),
     };
-    fetch("/api/create-room", requestOptions)
+    fetch("/room_backend/create-room", requestOptions)
       .then((response) => response.json())
       .then((data) => this.props.history.push("/room/" + data.code));
   }
@@ -72,7 +72,7 @@ export default class CreateRoomPage extends Component {
         code: this.props.roomCode,
       }),
     };
-    fetch("/api/update-room", requestOptions).then((response) => {
+    fetch("/room_backend/update-room", requestOptions).then((response) => {
       if (response.ok) {
         this.setState({
           successMsg: "Room updated successfully!",
@@ -99,7 +99,12 @@ export default class CreateRoomPage extends Component {
           </Button>
         </Grid>
         <Grid item xs={12} align="center">
-          <Button color="secondary" variant="contained" to="/" component={Link}>
+          <Button
+            color="secondary"
+            variant="contained"
+            to="/prosjekt/musikk-lobby"
+            component={Link}
+          >
             Back
           </Button>
         </Grid>

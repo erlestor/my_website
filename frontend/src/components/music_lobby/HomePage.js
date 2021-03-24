@@ -10,7 +10,6 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
-import Info from "./Info";
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -34,7 +33,6 @@ export default class HomePage extends Component {
   renderHomePage() {
     return (
       <Grid container spacing={3}>
-        {console.log("wooooo")}
         <Grid item xs={12} align="center">
           <Typography variant="h3" compact="h3">
             House Party
@@ -48,13 +46,6 @@ export default class HomePage extends Component {
               to="/prosjekt/musikk-lobby/join"
             >
               Join a Room
-            </Button>
-            <Button
-              color="default"
-              to="/prosjekt/musikk-lobby/info"
-              component={Link}
-            >
-              Info
             </Button>
             <Button
               color="secondary"
@@ -93,9 +84,8 @@ export default class HomePage extends Component {
           }}
         />
         <Route path="/prosjekt/musikk-lobby/join" component={RoomJoinPage} />
-        <Route path="/prosjekt/musikk-lobby/info" component={Info} />
         <Route
-          path="/prosjekt/musikk-lobby/create"
+          path="/prosjekt/musikk-lobby/create/"
           component={CreateRoomPage}
         />
         <Route
