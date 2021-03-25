@@ -49,7 +49,6 @@ export default class HomePage extends Component {
             </Button>
             <Button
               color="secondary"
-              to="/prosjekt/musikk-lobby/join"
               to="/prosjekt/musikk-lobby/create"
               component={Link}
             >

@@ -14,6 +14,7 @@ const useStyles = makeStyles({
         color: "white",
         cursor: "pointer",
       },
+      transition: "250ms",
     },
   },
   dropdown: {

@@ -5,6 +5,7 @@ import { Paper, Grid } from "@material-ui/core";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Nav from "./nav/Nav";
+import Footer from "./Footer";
 import Home from "./Home";
 import Projects from "./Projects";
 import Calendar from "./calendar/Calendar";
@@ -51,6 +52,7 @@ export default function App() {
             <Route exact path="/prosjekt/todolist" component={Todolist} />
             <Route exact path="/prosjekt" component={Projects} />
             <Route exact path="/" component={Home} />
+            <Footer />
           </Paper>
         </ThemeProvider>
       </Switch>
