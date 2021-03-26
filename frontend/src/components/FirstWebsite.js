@@ -9,7 +9,7 @@ export default function FirstWebsite() {
         width: "100vw",
         height: "93vh",
         borderWidth: "0",
-        marginTop: "-20px",
+        marginTop: "-40px",
       }}
     />
   );

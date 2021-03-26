@@ -7,13 +7,13 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 
 const useStyles = makeStyles({
   icon: {
-    margin: "5px",
+    margin: "10px",
     fontSize: "40px",
     color: "gray",
     "&:hover": {
       color: "white",
     },
-    transition: "250ms",
+    transition: "150ms",
   },
 });
 
@@ -24,11 +24,11 @@ export default function Footer() {
       container
       spacing={4}
       style={{
-        width: "100vw",
         backgroundColor: "#1f2041",
-        marginTop: "40px",
         padding: "50px",
         color: "lightgray",
+        margin: "0",
+        marginTop: "auto",
       }}
     >
       <Grid item xs={12} md={6} align="center">
@@ -41,9 +41,15 @@ export default function Footer() {
       <Grid item xs={12} md={6} align="center">
         <Typography variant="h5">Sosiale media</Typography>
         <Box>
-          <InstagramIcon className={classes.icon} />
-          <FacebookIcon className={classes.icon} />
-          <GitHubIcon className={classes.icon} />
+          <a href="https://www.instagram.com/erlend_storsve/" target="_blank">
+            <InstagramIcon className={classes.icon} />
+          </a>
+          <a href="https://www.facebook.com/erlend.storsve/" target="_blank">
+            <FacebookIcon className={classes.icon} />
+          </a>
+          <a href="https://github.com/erlestor/my_website" target="_blank">
+            <GitHubIcon className={classes.icon} />
+          </a>
         </Box>
       </Grid>
     </Grid>

@@ -14,7 +14,7 @@ const useStyles = makeStyles({
         color: "white",
         cursor: "pointer",
       },
-      transition: "250ms",
+      transition: "150ms",
     },
   },
   dropdown: {
@@ -41,7 +41,6 @@ function Nav() {
   return (
     <AppBar
       style={{
-        marginBottom: "20px",
         position: "sticky",
       }}
     >
