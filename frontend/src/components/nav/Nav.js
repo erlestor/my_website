@@ -10,11 +10,13 @@ const useStyles = makeStyles({
       fontSize: "15px",
       margin: "15px",
       color: "#b0aca5",
-      "&:hover": {
+      transition: "150ms",
+    },
+    "&:hover": {
+      "& p": {
         color: "white",
         cursor: "pointer",
       },
-      transition: "150ms",
     },
   },
   dropdown: {
@@ -39,11 +41,7 @@ function Nav() {
   const classes = useStyles();
 
   return (
-    <AppBar
-      style={{
-        position: "sticky",
-      }}
-    >
+    <AppBar style={{ position: "sticky" }}>
       <Toolbar style={{ display: "flex", justifyContent: "center" }}>
         <NavLink
           exact
@@ -59,6 +57,7 @@ function Nav() {
           link="prosjekt"
           items={[
             { name: "FØRSTE NETTSTED", link: "forste-nettsted" },
+            { name: "COUNTER", link: "counter" },
             { name: "TODOLISTE", link: "todolist" },
             { name: "KALENDER", link: "kalender" },
             { name: "MUSIKK LOBBY", link: "musikk-lobby" },

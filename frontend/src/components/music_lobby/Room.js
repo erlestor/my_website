@@ -152,6 +152,9 @@ export default class Room extends Component {
             Code: {this.roomCode}
           </Typography>
         </Grid>
+        <Grid item xs={12} align="center">
+          <Typography variant="h6">Open spotify to listen along!</Typography>
+        </Grid>
         <Grid item xs={12} sm={8}>
           <MusicPlayer {...this.state.song} />
         </Grid>

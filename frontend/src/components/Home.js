@@ -3,8 +3,16 @@ import { Grid, Typography } from "@material-ui/core";
 
 export default function Home() {
   return (
-    <Grid container justify="center">
-      <Typography variant="h2">Hjemmeside</Typography>
+    <Grid container justify="center" spacing={4}>
+      <Grid item xs={12} align="center">
+        <Typography variant="h2">Hjemmeside</Typography>
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <img
+          src="./././static/images/I am bready to die.jpg"
+          style={{ width: "100%" }}
+        />
+      </Grid>
     </Grid>
   );
 }

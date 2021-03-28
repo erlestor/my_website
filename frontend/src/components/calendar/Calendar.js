@@ -83,7 +83,7 @@ export default function Calendar() {
     };
     fetch("/backend/delete-event", requestOptions)
       .then((response) => response.json())
-      .then((data) => setLastClickedEvent({}));
+      .then(() => setLastClickedEvent({}));
   };
 
   const handleEvents = (events) => {

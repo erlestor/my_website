@@ -11,11 +11,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function DeleteDialog({
-  openAlert,
-  setOpenAlert,
-  handleDeleteEvent,
-}) {
+export default function DeleteDialog(props) {
+  const { openAlert, setOpenAlert, handleDeleteEvent } = props;
+
   return (
     <Dialog
       open={openAlert}

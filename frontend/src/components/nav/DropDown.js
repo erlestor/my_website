@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Typography } from "@material-ui/core";
+import { Typography, Box } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 
 export default function DropDown({ classes, name, link, items }) {
   const [showDropdown, setShowDowndown] = React.useState(false);
 
   return (
-    <div
+    <Box
       className={classes.dropdown}
       onMouseEnter={() => setShowDowndown(true)}
       onMouseLeave={() => setShowDowndown(false)}
@@ -20,7 +20,7 @@ export default function DropDown({ classes, name, link, items }) {
         <Typography className={classes.navlink}>{name}</Typography>
       </NavLink>
       {showDropdown && (
-        <div className={classes.dropdownContent}>
+        <Box className={classes.dropdownContent}>
           {items.map((item) => (
             <NavLink
               exact
@@ -31,8 +31,8 @@ export default function DropDown({ classes, name, link, items }) {
               <Typography>{item.name}</Typography>
             </NavLink>
           ))}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
