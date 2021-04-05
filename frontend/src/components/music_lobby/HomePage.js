@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import RoomJoinPage from "./RoomJoinPage";
 import CreateRoomPage from "./CreateRoomPage";
 import Room from "./Room";
@@ -11,26 +11,22 @@ import {
   Redirect,
 } from "react-router-dom";
 
-export default class HomePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      roomCode: null,
-    };
-    this.clearRoomCode = this.clearRoomCode.bind(this);
-  }
+export default function HomePage() {
+  const [roomCode, setRoomCode] = useState(null);
 
-  async componentDidMount() {
+  useEffect(() => {
     fetch("/room_backend/user-in-room")
       .then((response) => response.json())
       .then((data) => {
-        this.setState({
-          roomCode: data.code,
-        });
+        setRoomCode(data.code);
       });
+  }, []);
+
+  function clearRoomCode() {
+    setRoomCode(null);
   }
 
-  renderHomePage() {
+  function renderHomePage() {
     return (
       <Grid container spacing={3}>
         <Grid item xs={12} align="center">
@@ -60,38 +56,27 @@ export default class HomePage extends Component {
     );
   }
 
-  clearRoomCode() {
-    this.setState({
-      roomCode: null,
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <Route
-          exact
-          path="/prosjekt/musikk-lobby"
-          render={() => {
-            return this.state.roomCode ? (
-              <Redirect to={`musikk-lobby/room/${this.state.roomCode}`} />
-            ) : (
-              this.renderHomePage()
-            );
-          }}
-        />
-        <Route path="/prosjekt/musikk-lobby/join" component={RoomJoinPage} />
-        <Route
-          path="/prosjekt/musikk-lobby/create/"
-          component={CreateRoomPage}
-        />
-        <Route
-          path="/prosjekt/musikk-lobby/room/:roomCode"
-          render={(props) => {
-            return <Room {...props} leaveRoomCallback={this.clearRoomCode} />;
-          }}
-        />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Route
+        exact
+        path="/prosjekt/musikk-lobby"
+        render={() => {
+          return roomCode ? (
+            <Redirect to={`musikk-lobby/room/${roomCode}`} />
+          ) : (
+            renderHomePage()
+          );
+        }}
+      />
+      <Route path="/prosjekt/musikk-lobby/join" component={RoomJoinPage} />
+      <Route path="/prosjekt/musikk-lobby/create/" component={CreateRoomPage} />
+      <Route
+        path="/prosjekt/musikk-lobby/room/:roomCode"
+        render={(props) => {
+          return <Room {...props} leaveRoomCallback={clearRoomCode} />;
+        }}
+      />
+    </div>
+  );
 }
