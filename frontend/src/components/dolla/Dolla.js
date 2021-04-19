@@ -1,9 +1,16 @@
 import React from "react";
+import "./Dolla.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./pages";
+import SigninPage from "./pages/signin";
 
-export default function Dolla() {
+function Dolla() {
   return (
     <>
-      <h1>Halla det burde funk</h1>
+      <Route exact path="/" component={Home} />
+      <Route exact path="/signin" component={SigninPage} />
     </>
   );
 }
+
+export default Dolla;
