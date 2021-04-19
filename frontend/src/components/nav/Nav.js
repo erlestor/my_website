@@ -56,7 +56,11 @@ function Nav() {
           name="PROSJEKTER"
           link="prosjekt"
           items={[
-            { name: "FØRSTE NETTSTED", link: "forste-nettsted" },
+            {
+              name: "FØRSTE NETTSTED",
+              linkToOtherSite:
+                "https://klasserom.thisismyshow.tk/200/elev20023/it1/",
+            },
             { name: "COUNTER", link: "counter" },
             { name: "TODOLISTE", link: "todolist" },
             { name: "KALENDER", link: "kalender" },

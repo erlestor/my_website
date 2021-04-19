@@ -10,6 +10,7 @@ urlpatterns = [
     path('prosjekt/todolist', index),
     path('prosjekt/forste-nettsted', index),
     path('prosjekt/counter', index),
+    path('prosjekt/dolla', index),
     path('prosjekt/musikk-lobby', index),
     path('prosjekt/musikk-lobby/info', index),
     path('prosjekt/musikk-lobby/create', index),

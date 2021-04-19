@@ -1,1 +1,3 @@
-1: fikse spotify redirecting på music lobby
+fikse spotify redirecting på music lobby
+legg til muligheter for linker i dropdown
+følg dolla tutorialen for å lære fancy css
