@@ -65,6 +65,7 @@ function Nav() {
             { name: "TODOLISTE", link: "todolist" },
             { name: "KALENDER", link: "kalender" },
             { name: "MUSIKK LOBBY", link: "musikk-lobby" },
+            { name: "DOLLA", link: "dolla" },
           ]}
         />
       </Toolbar>

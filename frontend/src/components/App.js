@@ -20,6 +20,9 @@ import FirstWebsite from "./FirstWebsite";
 import HomePage from "./music_lobby/HomePage";
 import Counter from "./Counter";
 
+// dolla
+import Dolla from "./dolla/Dolla";
+
 const theme = createMuiTheme({
   palette: {
     type: "light",
@@ -57,6 +60,7 @@ export default function App(props) {
             <Nav />
             <Box className={classes.body}>
               <Route exact path="/prosjekt/kalender" component={Calendar} />
+              <Route exact path="/prosjekt/dolla" component={Dolla} />
               <Route
                 exact
                 path="/prosjekt/forste-nettsted"
