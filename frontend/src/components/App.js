@@ -7,21 +7,23 @@ import {
   ThemeProvider,
   makeStyles,
 } from "@material-ui/core/styles";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Nav from "./nav/Nav";
 import Footer from "./Footer";
 import Home from "./Home";
 import Projects from "./Projects";
 import Calendar from "./calendar/Calendar";
 import Todolist from "./todo/Todolist";
-import FirstWebsite from "./FirstWebsite";
+import Dolla from "./dolla/Dolla";
 
 // musikk lobby
 import HomePage from "./music_lobby/HomePage";
 import Counter from "./Counter";
-
-// dolla
-import Dolla from "./dolla/Dolla";
 
 const theme = createMuiTheme({
   palette: {
@@ -38,6 +40,8 @@ const theme = createMuiTheme({
 const useStyles = makeStyles({
   wrapper: {
     width: "100vw",
+    height: "100%",
+    position: "fixed",
     overflowY: "auto",
     overflowX: "hidden",
     display: "flex",
@@ -55,21 +59,15 @@ export default function App(props) {
   return (
     <Router>
       <Switch>
+        <Route path="/prosjekt/dolla" component={Dolla} />
         <ThemeProvider theme={theme}>
           <Paper square className={classes.wrapper}>
             <Nav />
             <Box className={classes.body}>
-              <Route exact path="/prosjekt/kalender" component={Calendar} />
-              <Route exact path="/prosjekt/dolla" component={Dolla} />
-              <Route
-                exact
-                path="/prosjekt/forste-nettsted"
-                aa
-                component={FirstWebsite}
-              />
+              <Route path="/prosjekt/kalender" component={Calendar} />
               <Route path="/prosjekt/musikk-lobby" component={HomePage} />
-              <Route exact path="/prosjekt/todolist" component={Todolist} />
-              <Route exact path="/prosjekt/counter" component={Counter} />
+              <Route path="/prosjekt/todolist" component={Todolist} />
+              <Route path="/prosjekt/counter" component={Counter} />
               <Route exact path="/prosjekt" component={Projects} />
               <Route exact path="/" component={Home} />
             </Box>

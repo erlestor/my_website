@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 # OPPDATER HVER GANG DU LAGER EN NY APP MED DJANGO
 urlpatterns = [
@@ -22,5 +23,6 @@ urlpatterns = [
     path('backend/', include('backend.urls')),
     path('room_backend/', include('room_backend.urls')),
     path('spotify/', include('spotify.urls')),
+    path('dolla/', TemplateView.as_view(template_name="index.html")),
     path('', include(('frontend.urls', 'frontend'), namespace='frontend')),
 ]

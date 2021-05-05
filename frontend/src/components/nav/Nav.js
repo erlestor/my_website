@@ -65,7 +65,10 @@ function Nav() {
             { name: "TODOLISTE", link: "todolist" },
             { name: "KALENDER", link: "kalender" },
             { name: "MUSIKK LOBBY", link: "musikk-lobby" },
-            { name: "DOLLA", link: "dolla" },
+            {
+              name: "DOLLA",
+              linkToOtherSite: "http://localhost:8000/prosjekt/dolla",
+            },
           ]}
         />
       </Toolbar>

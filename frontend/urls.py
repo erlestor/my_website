@@ -11,6 +11,7 @@ urlpatterns = [
     path('prosjekt/forste-nettsted', index),
     path('prosjekt/counter', index),
     path('prosjekt/dolla', index),
+    path('prosjekt/dolla/signin', index),
     path('prosjekt/musikk-lobby', index),
     path('prosjekt/musikk-lobby/info', index),
     path('prosjekt/musikk-lobby/create', index),

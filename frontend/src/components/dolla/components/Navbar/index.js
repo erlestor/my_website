@@ -35,10 +35,11 @@ const Navbar = ({ toggle }) => {
 
   return (
     <>
+      {/* problemet er at window.scrollY ikke endrer seg. Fordi vi scroller inne i en box, ikke i selve vinduet. flytt box eller noe */}
       <IconContext.Provider value={{ color: "#fff" }}>
         <Nav scrollNav={scrollNav}>
           <NavbarContainer>
-            <NavLogo to="/" onClick={toggleHome}>
+            <NavLogo to="/prosjekt/dolla" onClick={toggleHome}>
               dolla
             </NavLogo>
             <MobileIcon onClick={toggle}>
@@ -95,7 +96,7 @@ const Navbar = ({ toggle }) => {
               </NavItem>
             </NavMenu>
             <NavBtn>
-              <NavBtnLink to="/signin">Sign In</NavBtnLink>
+              <NavBtnLink to="dolla/signin">Sign In</NavBtnLink>
             </NavBtn>
           </NavbarContainer>
         </Nav>
