@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Typography, Box } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 
-export default function DropDown({ classes, name, link, items }) {
+export default function BigDropDown({ classes, name, link, items }) {
   const [showDropdown, setShowDowndown] = React.useState(false);
 
   return (
@@ -22,14 +22,9 @@ export default function DropDown({ classes, name, link, items }) {
       {showDropdown && (
         <Box className={classes.dropdownContent}>
           {items.map((item) => (
-            <NavLink
-              exact
-              to={"/prosjekt/" + item.link}
-              className={classes.navlink}
-              activeClassName={classes.active}
-            >
+            <a href={item.link} className={classes.navlink} target="_blank">
               <Typography>{item.name}</Typography>
-            </NavLink>
+            </a>
           ))}
         </Box>
       )}

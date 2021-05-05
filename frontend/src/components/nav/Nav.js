@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { NavLink } from "react-router-dom";
 import DropDown from "./DropDown";
+import BigDropDown from "./BigDropDown";
 
 const useStyles = makeStyles({
   navlink: {
@@ -53,21 +54,27 @@ function Nav() {
         </NavLink>
         <DropDown
           classes={classes}
-          name="PROSJEKTER"
+          name="PROSJEKT"
           link="prosjekt"
           items={[
-            {
-              name: "FØRSTE NETTSTED",
-              linkToOtherSite:
-                "https://klasserom.thisismyshow.tk/200/elev20023/it1/",
-            },
             { name: "COUNTER", link: "counter" },
             { name: "TODOLISTE", link: "todolist" },
             { name: "KALENDER", link: "kalender" },
             { name: "MUSIKK LOBBY", link: "musikk-lobby" },
+          ]}
+        />
+        <BigDropDown
+          classes={classes}
+          name="STØRRE PROSJEKTER"
+          link="nettsteder"
+          items={[
+            {
+              name: "FØRSTE NETTSTED",
+              link: "https://klasserom.thisismyshow.tk/200/elev20023/it1/",
+            },
             {
               name: "DOLLA",
-              linkToOtherSite: "http://localhost:8000/prosjekt/dolla",
+              link: "http://localhost:8000/prosjekt/dolla",
             },
           ]}
         />
