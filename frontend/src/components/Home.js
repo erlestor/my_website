@@ -7,9 +7,9 @@ export default function Home() {
       <Grid item xs={12} align="center">
         <Typography variant="h2">Hjemmeside</Typography>
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={11} md={6}>
         <img
-          src="./././static/images/I am bready to die.jpg"
+          src=".././static/images/I am bready to die.jpg"
           style={{ width: "100%" }}
         />
       </Grid>

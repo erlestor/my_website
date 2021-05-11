@@ -34,12 +34,15 @@
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "babel-plugin-react-scoped-css": "^1.1.1",
     "babel-preset-es2015": "^6.24.1",
     "file-loader": "^6.2.0",
     "fontsource-roboto": "^4.0.0",
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scroll": "^1.8.2",
+    "sass-loader": "^11.0.1",
+    "scoped-css-loader": "^1.0.0",
     "styled-components": "^5.2.3",
     "url-loader": "^4.1.1"
   }

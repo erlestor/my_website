@@ -1,9 +1,9 @@
-import React from "react";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { NavLink } from "react-router-dom";
-import DropDown from "./DropDown";
-import BigDropDown from "./BigDropDown";
+import React from "react"
+import { AppBar, Toolbar, Typography } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
+import { NavLink } from "react-router-dom"
+import DropDown from "./DropDown"
+import BigDropDown from "./BigDropDown"
 
 const useStyles = makeStyles({
   navlink: {
@@ -36,10 +36,10 @@ const useStyles = makeStyles({
       color: "white",
     },
   },
-});
+})
 
 function Nav() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <AppBar style={{ position: "sticky" }}>
@@ -61,6 +61,8 @@ function Nav() {
             { name: "TODOLISTE", link: "todolist" },
             { name: "KALENDER", link: "kalender" },
             { name: "MUSIKK LOBBY", link: "musikk-lobby" },
+            { name: "I'M BORED", link: "bored" },
+            { name: "MINESWEEPER", link: "minesweeper" },
           ]}
         />
         <BigDropDown
@@ -80,7 +82,7 @@ function Nav() {
         />
       </Toolbar>
     </AppBar>
-  );
+  )
 }
 
-export default Nav;
+export default Nav

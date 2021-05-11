@@ -22,23 +22,24 @@ export default function Footer() {
   return (
     <Grid
       container
+      justify="center"
+      align="center"
       spacing={4}
       style={{
         backgroundColor: "#1f2041",
         padding: "50px",
         color: "lightgray",
-        margin: "0",
-        marginTop: "auto",
+        margin: "auto 0 0 0",
       }}
     >
-      <Grid item xs={12} md={6} align="center">
+      <Grid item xs={12} md={6}>
         <Typography variant="h5">Fancy footer</Typography>
         <Typography>
           Her er masse ubrukelig tekst. Vanligvis skriver man info om lokasjon
           osv, men jeg vil helst ikke ha besøk.
         </Typography>
       </Grid>
-      <Grid item xs={12} md={6} align="center">
+      <Grid item xs={12} md={6}>
         <Typography variant="h5">Sosiale media</Typography>
         <Box>
           <a href="https://www.instagram.com/erlend_storsve/" target="_blank">

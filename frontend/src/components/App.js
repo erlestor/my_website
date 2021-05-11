@@ -1,29 +1,31 @@
 // HELE IDEEN ER Å IKKE RØRE DENNE TROR JEG
-import React from "react";
-import { render } from "react-dom";
-import { Paper, Grid, Box } from "@material-ui/core";
+import React from "react"
+import { render } from "react-dom"
+import { Paper, Grid, Box } from "@material-ui/core"
 import {
   createMuiTheme,
   ThemeProvider,
   makeStyles,
-} from "@material-ui/core/styles";
+} from "@material-ui/core/styles"
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   useLocation,
-} from "react-router-dom";
-import Nav from "./nav/Nav";
-import Footer from "./Footer";
-import Home from "./Home";
-import Projects from "./Projects";
-import Calendar from "./calendar/Calendar";
-import Todolist from "./todo/Todolist";
-import Dolla from "./dolla/Dolla";
+} from "react-router-dom"
+import Nav from "./nav/Nav"
+import Footer from "./Footer"
+import Home from "./Home"
+import Projects from "./Projects"
+import Calendar from "./calendar/Calendar"
+import Todolist from "./todo/Todolist"
+import Dolla from "./dolla/Dolla"
+import Bored from "./bored/Bored"
+import Minesweeper from "./minesweeper/Minesweeper"
 
 // musikk lobby
-import HomePage from "./music_lobby/HomePage";
-import Counter from "./Counter";
+import HomePage from "./music_lobby/HomePage"
+import Counter from "./Counter"
 
 const theme = createMuiTheme({
   palette: {
@@ -35,7 +37,7 @@ const theme = createMuiTheme({
       main: "#ffc857",
     },
   },
-});
+})
 
 const useStyles = makeStyles({
   wrapper: {
@@ -51,10 +53,10 @@ const useStyles = makeStyles({
     paddingTop: "40px",
     paddingBottom: "40px",
   },
-});
+})
 
 export default function App(props) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Router>
@@ -68,6 +70,8 @@ export default function App(props) {
               <Route path="/prosjekt/musikk-lobby" component={HomePage} />
               <Route path="/prosjekt/todolist" component={Todolist} />
               <Route path="/prosjekt/counter" component={Counter} />
+              <Route path="/prosjekt/bored" component={Bored} />
+              <Route path="/prosjekt/minesweeper" component={Minesweeper} />
               <Route exact path="/prosjekt" component={Projects} />
               <Route exact path="/" component={Home} />
             </Box>
@@ -76,9 +80,9 @@ export default function App(props) {
         </ThemeProvider>
       </Switch>
     </Router>
-  );
+  )
 }
 
 // DO NOT TOUCH
-const appDiv = document.getElementById("app");
-render(<App />, appDiv);
+const appDiv = document.getElementById("app")
+render(<App />, appDiv)
