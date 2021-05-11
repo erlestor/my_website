@@ -1,15 +1,12 @@
 #minesweeper * {
   box-sizing: border-box;
+  font-family: roboto;
 }
 
 #minesweeper .body {
-  margin: 0;
-  background-color: #333;
   display: flex;
-  align-items: center;
-  font-size: 3rem;
   flex-direction: column;
-  color: white;
+  align-items: center;
 }
 
 #minesweeper .title {
@@ -17,8 +14,6 @@
 }
 
 #minesweeper .subtext {
-  color: #ccc;
-  font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
@@ -28,7 +23,6 @@
   grid-template-columns: repeat(10, 60px);
   grid-template-rows: repeat(10, 60px);
   gap: 4px;
-  background-color: #777;
 }
 
 #minesweeper .board > * {
@@ -40,21 +34,22 @@
   color: white;
   border: 2px solid #bbb;
   user-select: none;
+  font-size: 2rem;
 }
 
-#minesweeper .board .hidden {
+#minesweeper .hidden {
   background-color: #bbb;
   cursor: pointer;
 }
 
-#minesweeper .board .mine {
+#minesweeper .mine {
   background-color: red;
 }
 
-#minesweeper .board .number {
+#minesweeper .number {
   background-color: none;
 }
 
-#minesweeper .board .marked {
+#minesweeper .marked {
   background-color: yellow;
 }
