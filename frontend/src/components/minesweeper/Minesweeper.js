@@ -1,143 +1,40 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import "./styles.css"
-import { Typography } from "@material-ui/core"
 
-const TILE_STATUSES = {
-  HIDDEN: "hidden",
-  MINE: "mine",
-  NUMBER: "number",
-  MARKED: "marked",
-}
+import { Typography } from "@material-ui/core"
+import { useTheme } from "@material-ui/core/styles"
 
 const Minesweeper = () => {
+  const theme = useTheme()
+
+  const NUMBER_OF_MINES = 10
   const BOARD_SIZE = 10
-  const NUMBER_OF_MINES = 8
+
+  const [subtext, setSubtext] = useState("Mines left: " + NUMBER_OF_MINES)
   const [board, setBoard] = useState(createBoard(BOARD_SIZE, NUMBER_OF_MINES))
-  const [minesLeftText, setMinesLeftText] = useState(
-    "Mines left: " + NUMBER_OF_MINES
-  )
+  const [gameOver, setGameOver] = useState(false)
+
+  // gjemt talls om jeg endrer for å oppdatere board, helt ræva løsning, men gidder ikke redux
+  const [bullshit, setBullshit] = useState(0)
 
   function createBoard(boardSize, numberOfMines) {
     const board = []
     const minePositions = getMinePositions(boardSize, numberOfMines)
 
-    for (let x = 0; x < boardSize; x++) {
-      const row = []
-
-      for (let y = 0; y < boardSize; y++) {
+    for (let y = 0; y < boardSize; y++) {
+      for (let x = 0; x < boardSize; x++) {
         const tile = {
           x,
           y,
-          mine: minePositions.some(positionMatch.bind(null, { x, y })),
-          status: TILE_STATUSES.HIDDEN,
+          mine: minePositions.some(mine => positionMatch(mine, { x, y })),
+          status: "hidden",
           text: "",
         }
-
-        row.push(tile)
+        board.push(tile)
       }
-      board.push(row)
     }
 
     return board
-  }
-
-  function listMinesLeft() {
-    const markedTilesCount = board.reduce((count, row) => {
-      return (
-        count + row.filter(tile => tile.status === TILE_STATUSES.MARKED).length
-      )
-    }, 0)
-    setMinesLeftText(`Mines left: ${NUMBER_OF_MINES - markedTilesCount}`)
-  }
-
-  function updateStatus(tile, status) {
-    // oppdater kun den indeksen i board
-    const newBoard = [...board]
-    const newTile = { ...tile, [todo.status]: status }
-    newBoard[tile.x][tile.y] = newTile
-    setBoard(newBoard)
-  }
-
-  function markTile(tile) {
-    if (
-      tile.status !== TILE_STATUSES.HIDDEN &&
-      tile.status !== TILE_STATUSES.MARKED
-    )
-      return
-
-    if (tile.status === TILE_STATUSES.MARKED) {
-      tile.status = TILE_STATUSES.HIDDEN
-      return
-    }
-
-    tile.status = TILE_STATUSES.MARKED
-  }
-
-  function revealTile(tile) {
-    if (tile.status !== TILE_STATUSES.HIDDEN) {
-      return
-    }
-
-    if (tile.mine) {
-      tile.status = TILE_STATUSES.MINE
-      return
-    }
-
-    tile.status = TILE_STATUSES.NUMBER
-    const adjacentTiles = nearbyTiles(tile)
-    const mines = adjacentTiles.filter(tile => tile.mine)
-    if (mines.length === 0) {
-      adjacentTiles.forEach(t => revealTile(t))
-    } else {
-      tile.text = mines.length
-    }
-  }
-
-  function checkGameEnd() {
-    const win = checkWin()
-    const lose = checkLose()
-
-    if (win || lose) {
-      // må skrives om. Handler om å stoppe klikking når spillet er over
-      //   boardElement.addEventListener("click", stopProp, { capture: true })
-      //   boardElement.addEventListener("contextmenu", stopProp, { capture: true })
-    }
-
-    if (win) {
-      setMinesLeftText("You win")
-    }
-    if (lose) {
-      setMinesLeftText("You lose")
-      board.forEach(row => {
-        row.forEach(tile => {
-          if (tile.status === TILE_STATUSES.MARKED) markTile(tile)
-          if (tile.mine) revealTile(board, tile)
-        })
-      })
-    }
-  }
-
-  function stopProp(e) {
-    e.stopImmediatePropagation()
-  }
-
-  function checkWin() {
-    return board.every(row => {
-      return row.every(tile => {
-        return (
-          tile.status === TILE_STATUSES.NUMBER ||
-          (tile.mine &&
-            (tile.status === TILE_STATUSES.HIDDEN ||
-              tile.status === TILE_STATUSES.MARKED))
-        )
-      })
-    })
-  }
-
-  function checkLose() {
-    return board.some(row =>
-      row.some(tile => tile.status === TILE_STATUSES.MINE)
-    )
   }
 
   function getMinePositions(boardSize, numberOfMines) {
@@ -149,7 +46,7 @@ const Minesweeper = () => {
         y: randomNumber(boardSize),
       }
 
-      if (!positions.some(positionMatch.bind(null, position))) {
+      if (!positions.some(p => positionMatch(p, position))) {
         positions.push(position)
       }
     }
@@ -157,6 +54,54 @@ const Minesweeper = () => {
     return positions
   }
 
+  function revealTile(tile) {
+    if (tile.status !== "hidden") {
+      return
+    }
+
+    if (tile.mine) {
+      tile.status = "mine"
+      setBullshit(bullshit + 1)
+      return
+    }
+
+    tile.status = "number"
+
+    const adjacentTiles = nearbyTiles(tile)
+    const mines = adjacentTiles.filter(tile => tile.mine)
+
+    if (mines.length === 0) {
+      adjacentTiles.forEach(t => revealTile(t))
+    } else {
+      tile.text = mines.length
+    }
+
+    // tester å tving rerender
+    setBullshit(bullshit + 1)
+  }
+
+  function markTile(tile) {
+    if (tile.status !== "hidden" && tile.status !== "marked") {
+      return
+    }
+
+    if (tile.status === "marked") {
+      tile.status = "hidden"
+      return
+    }
+
+    tile.status = "marked"
+  }
+
+  function listMinesLeft() {
+    const markedTilesCount = board.filter(tile => tile.status === "marked")
+      .length
+
+    setSubtext(`Mines left:  ${NUMBER_OF_MINES - markedTilesCount}`)
+    setBoard(board)
+  }
+
+  // hjelpefunksjoner
   function positionMatch(a, b) {
     return a.x === b.x && a.y === b.y
   }
@@ -165,50 +110,97 @@ const Minesweeper = () => {
     return Math.floor(Math.random() * size)
   }
 
-  function nearbyTiles(board, { x, y }) {
+  function nearbyTiles({ x, y }) {
     const tiles = []
 
-    for (let xOffset = -1; xOffset <= 1; xOffset++) {
-      for (let yOffset = -1; yOffset <= 1; yOffset++) {
-        const tile = board[x + xOffset]?.[y + yOffset]
-        if (tile) tiles.push(tile)
+    for (let yOffset = -1; yOffset <= 1; yOffset++) {
+      for (let xOffset = -1; xOffset <= 1; xOffset++) {
+        const rowIndex = y + yOffset
+        const columnIndex = x + xOffset
+
+        if (rowIndex < 0 || rowIndex > 9 || columnIndex < 0 || columnIndex > 9)
+          continue
+
+        const tile = board[rowIndex * 10 + columnIndex]
+        tiles.push(tile)
       }
     }
 
     return tiles
   }
 
+  function checkGameEnd() {
+    const win = checkWin()
+    const lose = checkLose()
+
+    if (win || lose) {
+      setGameOver(true)
+    }
+
+    if (win) {
+      setSubtext("You win")
+    }
+    if (lose) {
+      setSubtext("You lose")
+      board.forEach(tile => {
+        if (tile.status === "marked") markTile(tile)
+        if (tile.mine) revealTile(tile)
+      })
+    }
+
+    setBullshit(bullshit + 1)
+  }
+
+  function checkWin() {
+    return board.every(
+      tile =>
+        tile.status === "number" ||
+        (tile.mine && (tile.status === "hidden" || tile.status === "marked"))
+    )
+  }
+
+  function checkLose() {
+    return board.some(tile => tile.status === "mine")
+  }
   return (
     <div id="minesweeper">
       <div className="body">
         <Typography variant="h3" className="title">
           Minesweeper
         </Typography>
-        <div className="subtext">{minesLeftText}</div>
-        <div className="board">
-          {board.map(row =>
-            row.map(tile => (
-              <div
-                onClick={() => {
-                  revealTile(board, tile)
+        <Typography variant="h5" className="subtext">
+          {subtext}
+        </Typography>
+        <div className="board" style={{ backgroundColor: "#777" }}>
+          {board.map(tile => (
+            <div
+              className={tile.status}
+              onClick={() => {
+                if (!gameOver) {
+                  revealTile(tile)
                   checkGameEnd()
-                }}
-                onContextMenu={e => {
-                  e.preventDefault()
+                }
+              }}
+              onContextMenu={e => {
+                e.preventDefault()
+                if (!gameOver) {
                   markTile(tile)
                   listMinesLeft()
-                }}
-                className={tile.status}
-                key={tile}
-              >
-                {tile.text}
-              </div>
-            ))
-          )}
+                }
+              }}
+            >
+              {tile.text}
+            </div>
+          ))}
         </div>
+        <div style={{ display: "none" }}>{bullshit}</div>
       </div>
     </div>
   )
 }
 
 export default Minesweeper
+
+// fikse revealing av tiles
+
+// sjekke om spillet er over
