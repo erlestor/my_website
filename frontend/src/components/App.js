@@ -22,6 +22,7 @@ import Todolist from "./todo/Todolist"
 import Dolla from "./dolla/Dolla"
 import Bored from "./bored/Bored"
 import Minesweeper from "./minesweeper/Minesweeper"
+import PathfindingVisualizer from "./pathfindingVisualizer/PathfindingVisualizer"
 
 // musikk lobby
 import HomePage from "./music_lobby/HomePage"
@@ -55,7 +56,7 @@ const useStyles = makeStyles({
   },
 })
 
-export default function App(props) {
+export default function App() {
   const classes = useStyles()
 
   return (
@@ -72,6 +73,10 @@ export default function App(props) {
               <Route path="/prosjekt/counter" component={Counter} />
               <Route path="/prosjekt/bored" component={Bored} />
               <Route path="/prosjekt/minesweeper" component={Minesweeper} />
+              <Route
+                path="/prosjekt/pathfinding"
+                component={PathfindingVisualizer}
+              />
               <Route exact path="/prosjekt" component={Projects} />
               <Route exact path="/" component={Home} />
             </Box>

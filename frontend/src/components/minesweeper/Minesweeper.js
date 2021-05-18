@@ -1,20 +1,16 @@
 import React, { useState } from "react"
 import "./styles.css"
 
-import { Typography } from "@material-ui/core"
-import { useTheme } from "@material-ui/core/styles"
+import { Typography, Slider, Button } from "@material-ui/core"
 
 const Minesweeper = () => {
-  const theme = useTheme()
-
-  const NUMBER_OF_MINES = 10
   const BOARD_SIZE = 10
 
-  const [subtext, setSubtext] = useState("Mines left: " + NUMBER_OF_MINES)
-  const [board, setBoard] = useState(createBoard(BOARD_SIZE, NUMBER_OF_MINES))
+  const [subtext, setSubtext] = useState("Pick the number of mines")
+  const [board, setBoard] = useState([])
   const [gameOver, setGameOver] = useState(false)
 
-  // gjemt talls om jeg endrer for å oppdatere board, helt ræva løsning, men gidder ikke redux
+  // gjemt tall som jeg endrer for å oppdatere board, helt ræva løsning, men gidder ikke redux
   const [bullshit, setBullshit] = useState(0)
 
   function createBoard(boardSize, numberOfMines) {
@@ -97,7 +93,7 @@ const Minesweeper = () => {
     const markedTilesCount = board.filter(tile => tile.status === "marked")
       .length
 
-    setSubtext(`Mines left:  ${NUMBER_OF_MINES - markedTilesCount}`)
+    setSubtext(`Mines left:  ${value - markedTilesCount}`)
     setBoard(board)
   }
 
@@ -162,6 +158,17 @@ const Minesweeper = () => {
   function checkLose() {
     return board.some(tile => tile.status === "mine")
   }
+
+  // teste slider
+  const [value, setValue] = useState(10)
+  const [showStartOptions, setShowStartOptions] = useState(true)
+
+  const handleStartButton = () => {
+    setBoard(createBoard(BOARD_SIZE, value))
+    setSubtext("Mines left: " + value)
+    setShowStartOptions(false)
+  }
+
   return (
     <div id="minesweeper">
       <div className="body">
@@ -171,7 +178,57 @@ const Minesweeper = () => {
         <Typography variant="h5" className="subtext">
           {subtext}
         </Typography>
-        <div className="board" style={{ backgroundColor: "#777" }}>
+        {showStartOptions && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: "50px",
+              justifyContent: "center",
+              width: "200px",
+            }}
+          >
+            <Slider
+              marks
+              value={typeof value === "number" ? value : 10}
+              step={1}
+              min={1}
+              max={20}
+              valueLabelDisplay="auto"
+              onChange={(event, newValue) => {
+                setValue(newValue)
+              }}
+            />
+            <Typography
+              style={{ margin: "20px 0 20px 0", textAlign: "center" }}
+            >
+              Mines chosen: {typeof value === "number" ? value : 10}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleStartButton}
+            >
+              Start game
+            </Button>
+          </div>
+        )}
+        {gameOver && (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              setBoard([])
+              setShowStartOptions(true)
+              setGameOver(false)
+              setSubtext("Pick the number of mines")
+            }}
+            style={{ marginBottom: "20px" }}
+          >
+            Restart
+          </Button>
+        )}
+        <div className="board">
           {board.map(tile => (
             <div
               className={tile.status}
@@ -200,7 +257,3 @@ const Minesweeper = () => {
 }
 
 export default Minesweeper
-
-// fikse revealing av tiles
-
-// sjekke om spillet er over

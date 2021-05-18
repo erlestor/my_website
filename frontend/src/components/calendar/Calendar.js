@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import { Grid } from "@material-ui/core";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import nbLocale from "@fullcalendar/core/locales/nb";
-import DeleteDialog from "./DeleteDialog";
+import React, { useState } from "react"
+import { Grid } from "@material-ui/core"
+import FullCalendar from "@fullcalendar/react"
+import dayGridPlugin from "@fullcalendar/daygrid"
+import timeGridPlugin from "@fullcalendar/timegrid"
+import interactionPlugin from "@fullcalendar/interaction"
+import nbLocale from "@fullcalendar/core/locales/nb"
+import DeleteDialog from "./DeleteDialog"
 
 export default function Calendar() {
   // copy paste dialog greier
-  const [openAlert, setOpenAlert] = React.useState(false);
-  const [lastClickedEvent, setLastClickedEvent] = React.useState({});
+  const [openAlert, setOpenAlert] = React.useState(false)
+  const [lastClickedEvent, setLastClickedEvent] = React.useState({})
 
-  const [currentEvents, setCurrentEvents] = useState([]);
+  const [currentEvents, setCurrentEvents] = useState([])
 
-  const handleDateSelect = (selectInfo) => {
-    let title = prompt("Please enter a new title for your event");
-    let calendarApi = selectInfo.view.calendar;
+  const handleDateSelect = selectInfo => {
+    let title = prompt("Please enter a new title for your event")
+    let calendarApi = selectInfo.view.calendar
 
-    calendarApi.unselect(); // clear date selection
+    calendarApi.unselect() // clear date selection
 
     if (title) {
       calendarApi.addEvent({
@@ -26,12 +26,12 @@ export default function Calendar() {
         start: selectInfo.startStr,
         end: selectInfo.endStr,
         allDay: selectInfo.allDay,
-      });
+      })
     }
-  };
+  }
 
-  const addEvent = (event) => {
-    console.log(event.event.title);
+  const addEvent = event => {
+    console.log(event.event.title)
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,13 +41,13 @@ export default function Calendar() {
         end: event.event.end,
         allDay: event.event.allDay,
       }),
-    };
+    }
     fetch("/backend/create-event", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  };
+      .then(response => response.json())
+      .then(data => console.log(data))
+  }
 
-  const updateEvent = (event) => {
+  const updateEvent = event => {
     const requestOptions = {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -59,36 +59,36 @@ export default function Calendar() {
         end: event.event.end,
         allDay: event.event.allDay,
       }),
-    };
+    }
     fetch("/backend/update-event", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  };
+      .then(response => response.json())
+      .then(data => console.log(data))
+  }
 
-  const handleEventClick = (clickInfo) => {
-    setLastClickedEvent(clickInfo.event);
-    setOpenAlert(true);
-  };
+  const handleEventClick = clickInfo => {
+    setLastClickedEvent(clickInfo.event)
+    setOpenAlert(true)
+  }
 
   const handleDeleteEvent = () => {
-    setOpenAlert(false);
-    lastClickedEvent.remove();
-  };
+    setOpenAlert(false)
+    lastClickedEvent.remove()
+  }
 
   const deleteEvent = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: lastClickedEvent.id }),
-    };
+    }
     fetch("/backend/delete-event", requestOptions)
-      .then((response) => response.json())
-      .then(() => setLastClickedEvent({}));
-  };
+      .then(response => response.json())
+      .then(() => setLastClickedEvent({}))
+  }
 
-  const handleEvents = (events) => {
-    setCurrentEvents(events);
-  };
+  const handleEvents = events => {
+    setCurrentEvents(events)
+  }
 
   function renderEventContent(eventInfo) {
     return (
@@ -96,12 +96,12 @@ export default function Calendar() {
         <b>{eventInfo.timeText}</b>
         <i>{eventInfo.event.title}</i>
       </>
-    );
+    )
   }
 
   return (
     <Grid container justify="center" style={{ fontFamily: "Roboto" }}>
-      <Grid item xs={11} md={6}>
+      <Grid item xs={11} md={9} lg={7}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -130,5 +130,5 @@ export default function Calendar() {
         />
       </Grid>
     </Grid>
-  );
+  )
 }

@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Button, Typography, Grid } from "@material-ui/core";
+import React, { useEffect, useState } from "react"
+import { Button, Typography, Grid } from "@material-ui/core"
 
 // rafce for ny arrow function component
 
 const Bored = () => {
-  const [currentJoke, setCurrentJoke] = useState("");
+  const [currentJoke, setCurrentJoke] = useState("")
 
   const fetchNewJoke = () => {
     fetch("https://official-joke-api.appspot.com/random_joke")
-      .then((response) => response.json())
-      .then((joke) => {
-        setCurrentJoke(joke.setup + " " + joke.punchline);
-      });
-  };
+      .then(response => response.json())
+      .then(joke => {
+        setCurrentJoke(joke.setup + " " + joke.punchline)
+      })
+  }
 
   return (
     <Grid container spacing={4} direction="column" align="center">
       <Grid item xs={12}>
         <Typography variant="h4">
-          Are you bored? Press the button below
+          Are you bored?
+          <br />
+          Press the button below
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -26,7 +28,7 @@ const Bored = () => {
           color="primary"
           variant="contained"
           onClick={() => {
-            fetchNewJoke();
+            fetchNewJoke()
           }}
         >
           Press me!
@@ -38,7 +40,7 @@ const Bored = () => {
         </Typography>
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default Bored;
+export default Bored

@@ -23,6 +23,7 @@
   grid-template-columns: repeat(10, 60px);
   grid-template-rows: repeat(10, 60px);
   gap: 4px;
+  background-color: #777;
 }
 
 #minesweeper .board > * {

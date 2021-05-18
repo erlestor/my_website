@@ -58,11 +58,12 @@ function Nav() {
           link="prosjekt"
           items={[
             { name: "COUNTER", link: "counter" },
+            { name: "I'M BORED", link: "bored" },
             { name: "TODOLISTE", link: "todolist" },
             { name: "KALENDER", link: "kalender" },
-            { name: "MUSIKK LOBBY", link: "musikk-lobby" },
-            { name: "I'M BORED", link: "bored" },
             { name: "MINESWEEPER", link: "minesweeper" },
+            { name: "MUSIKK LOBBY", link: "musikk-lobby" },
+            { name: "PATH FINDING", link: "pathfinding" },
           ]}
         />
         <BigDropDown
