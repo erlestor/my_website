@@ -13,6 +13,10 @@
   background-color: green;
 }
 
+#pathfinding .node-waypoint {
+  background-color: blue;
+}
+
 #pathfinding .node-visited {
   animation-name: visitedAnimation;
   animation-duration: 1.5s;

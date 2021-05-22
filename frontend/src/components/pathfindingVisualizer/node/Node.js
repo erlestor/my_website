@@ -4,14 +4,14 @@ import "./Node.css"
 
 const Node = props => {
   const {
+    row,
     col,
     isFinish,
     isStart,
     isWall,
+    isWaypoint,
     onMouseDown,
     onMouseEnter,
-    onMouseUp,
-    row,
   } = props
 
   const extraClassName = isFinish
@@ -20,15 +20,16 @@ const Node = props => {
     ? "node-start"
     : isWall
     ? "node-wall"
+    : isWaypoint
+    ? "node-waypoint"
     : ""
 
   return (
-    <div
+    <td
       id={`node-${row}-${col}`}
       className={`node ${extraClassName}`}
       onMouseDown={() => onMouseDown(row, col)}
       onMouseEnter={() => onMouseEnter(row, col)}
-      onMouseUp={() => onMouseUp()}
     />
   )
 }
