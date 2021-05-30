@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react"
-import Node from "./node/Node"
+import Node from "./components/node/Node"
 import { dijkstra, getNodesInShortestPathOrder } from "./algorithms/dijkstra"
+import { aStar } from "./algorithms/aStar"
+import { greedyBestFirst } from "./algorithms/greedyBestFirst"
 
 import "./PathfindingVisualizer.css"
 
-import { Grid, Button, ButtonGroup } from "@material-ui/core"
-
-// TODO:
-// 1. handle edge cases
-//  a. ikke tillat noe mens algoritmen/animasjonen kjører
-// 2. legg til flytting av start og end tile
-// Må beregne default start og finish også isåfall. Evt ikke plasser de automatisk
+import {
+  Grid,
+  Button,
+  ButtonGroup,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@material-ui/core"
 
 const PathfindingVisualizer = () => {
   const [grid, setGrid] = useState([])
@@ -20,6 +24,9 @@ const PathfindingVisualizer = () => {
   const [waypointNode, setWaypointNode] = useState({ row: 5, col: 7 })
 
   const [changeTile, setChangeTile] = useState("")
+  const [algorithm, setAlgorithm] = useState("dijkstra")
+  const [maze, setMaze] = useState("random")
+  const [algorithmActive, setAlgorithmActive] = useState(false)
 
   useEffect(() => {
     const grid = getInitialGrid(25, getNumberOfCols())
@@ -27,6 +34,7 @@ const PathfindingVisualizer = () => {
   }, [])
 
   function handleMouseDown(row, col) {
+    if (algorithmActive) return
     if (row === startNode.row && col === startNode.col) {
       setChangeTile("start")
     } else if (row === finishNode.row && col === finishNode.col) {
@@ -45,6 +53,7 @@ const PathfindingVisualizer = () => {
   }
 
   function handleMouseEnter(row, col) {
+    if (algorithmActive) return
     switch (changeTile) {
       case "start":
         setStartNode({ row, col })
@@ -68,6 +77,7 @@ const PathfindingVisualizer = () => {
         getNewGridWithNodeMoved(startNode, (grid, node) => {
           grid.forEach(row => row.forEach(node => (node.isStart = false)))
           node.isStart = true
+          node.isWall = false
         })
       )
   }, [startNode])
@@ -78,6 +88,7 @@ const PathfindingVisualizer = () => {
         getNewGridWithNodeMoved(finishNode, (grid, node) => {
           grid.forEach(row => row.forEach(node => (node.isFinish = false)))
           node.isFinish = true
+          node.isWall = false
         })
       )
   }, [finishNode])
@@ -88,6 +99,7 @@ const PathfindingVisualizer = () => {
         getNewGridWithNodeMoved(waypointNode, (grid, node) => {
           grid.forEach(row => row.forEach(node => (node.isWaypoint = false)))
           node.isWaypoint = true
+          node.isWall = false
         })
       )
   }, [waypointNode])
@@ -146,22 +158,42 @@ const PathfindingVisualizer = () => {
     return Math.floor(window.innerWidth / 25) - 10
   }
 
-  function visualizeDijkstra() {
+  function visualizeAlgorithm() {
+    if (algorithmActive) return
+    setAlgorithmActive(true)
+
     const startNodeASD = grid[startNode.row][startNode.col]
     const finishNodeASD = grid[finishNode.row][finishNode.col]
 
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[0].length; col++) {
+        const node = grid[row][col]
+        node.isVisited = false
+        node.distance = Infinity
+        if (node.isStart) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-start"
+        } else if (node.isFinish) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-finish"
+        } else if (node.isWall) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-wall"
+        } else {
+          document.getElementById(`node-${row}-${col}`).className = "node"
+        }
+      }
+    }
+
+    let alg = () => {}
+    if (algorithm === "dijkstra") alg = dijkstra
+    if (algorithm === "aStar") alg = aStar
+    if (algorithm === "greedyBestFirst") alg = greedyBestFirst
+
     if (grid.some(row => row.some(node => node.isWaypoint))) {
       const wayPointNodeASD = grid[waypointNode.row][waypointNode.col]
-      const visitedNodesToWaypoint = dijkstra(
-        grid,
-        startNodeASD,
-        wayPointNodeASD
-      )
-      const visitedNodesToFinish = dijkstra(
-        grid,
-        wayPointNodeASD,
-        finishNodeASD
-      )
+      const visitedNodesToWaypoint = alg(grid, startNodeASD, wayPointNodeASD)
+      const visitedNodesToFinish = alg(grid, wayPointNodeASD, finishNodeASD)
       const shortestPathToWaypoint = getNodesInShortestPathOrder(
         wayPointNodeASD
       )
@@ -172,17 +204,21 @@ const PathfindingVisualizer = () => {
       const nodesInShortestPathOrder = shortestPathToWaypoint.concat(
         shortestPathToFinish
       )
-      animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder)
+      animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder)
     } else {
-      const visitedNodesInOrder = dijkstra(grid, startNodeASD, finishNodeASD)
+      const visitedNodesInOrder = alg(grid, startNodeASD, finishNodeASD)
       const nodesInShortestPathOrder = getNodesInShortestPathOrder(
         finishNodeASD
       )
-      animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder)
+      animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder)
     }
   }
 
-  function animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+  function animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
+    setTimeout(() => {
+      setAlgorithmActive(false)
+      console.log("it worked bby")
+    }, (visitedNodesInOrder.length + 1) * 10 + nodesInShortestPathOrder.length * 50 + 50)
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -211,11 +247,13 @@ const PathfindingVisualizer = () => {
   function resetBoard() {
     setStartNode({ row: 10, col: 4 })
     setFinishNode({ row: 10, col: 8 })
-    setGrid(getInitialGrid(20, getNumberOfCols()))
+    setGrid(getInitialGrid(25, getNumberOfCols()))
 
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[0].length; col++) {
         const node = grid[row][col]
+        node.isVisited = false
+        node.distance = Infinity
         if (node.isStart) {
           document.getElementById(`node-${row}-${col}`).className =
             "node node-start"
@@ -235,18 +273,70 @@ const PathfindingVisualizer = () => {
     setGrid(newGrid)
   }
 
+  const handleAlgorithmSelect = alg => {
+    setAlgorithm(alg)
+  }
+
+  const handleMazeSelect = maze => {
+    setMaze(maze)
+  }
+
+  function generateMaze() {
+    const newGrid = grid.slice()
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[0].length; col++) {
+        const node = newGrid[row][col]
+        if (!node.isStart && !node.isFinish && !node.isWaypoint) {
+          var random_boolean = Math.random() < 0.3
+          node.isWall = random_boolean
+        }
+      }
+    }
+    setGrid(newGrid)
+  }
+
   return (
     <Grid container id="pathfinding" direction="column">
+      <Grid container item xs={12}>
+        <Grid item xs={6} align="right">
+          <FormControl style={{ width: "300px", margin: "20px" }}>
+            <InputLabel>Pick an Algorithm</InputLabel>
+            <Select
+              value={algorithm}
+              onChange={e => handleAlgorithmSelect(e.target.value)}
+              style={{ textAlign: "left" }}
+            >
+              <MenuItem value={"dijkstra"}>Dijkstra's algorithm</MenuItem>
+              <MenuItem value={"aStar"}>A* algorithm</MenuItem>
+              <MenuItem value={"greedyBestFirst"}>Greedy Best-First</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6} align="left">
+          <FormControl style={{ width: "300px", margin: "20px" }}>
+            <InputLabel>Pick a Maze</InputLabel>
+            <Select
+              value={maze}
+              onChange={e => handleMazeSelect(e.target.value)}
+            >
+              <MenuItem value={"random"}>Basic random maze</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
       <Grid item xs={12} align="center">
         <ButtonGroup variant="contained">
           <Button color="secondary" onClick={addWaypoint}>
             Add waypoint
           </Button>
-          <Button color="primary" onClick={visualizeDijkstra}>
-            Visualize Dijkstra's Algorithm
+          <Button color="primary" onClick={() => visualizeAlgorithm()}>
+            Visualize Algorithm
           </Button>
           <Button color="secondary" onClick={resetBoard}>
             Reset Board
+          </Button>
+          <Button color="secondary" onClick={() => generateMaze()}>
+            Generate Maze
           </Button>
         </ButtonGroup>
       </Grid>

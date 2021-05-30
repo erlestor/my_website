@@ -1,28 +1,48 @@
-// Performs Dijkstra's algorithm; returns *all* nodes in the order
-// in which they were visited. Also makes nodes point back to their
-// previous node, effectively allowing us to compute the shortest path
-// by backtracking from the finish node.
-export function dijkstra(grid, startNode, finishNode) {
+export function aStar(grid, startNode, finishNode) {
   const visitedNodesInOrder = []
   startNode.distance = 0
   const unvisitedNodes = getAllNodes(grid)
   while (!!unvisitedNodes.length) {
-    sortNodesByDistance(unvisitedNodes)
+    // Sorterer nodene ut ifra avstand
+    sortNodesByDistance(unvisitedNodes, finishNode)
+    // Velger den nærmeste noden
     const closestNode = unvisitedNodes.shift()
-    // If we encounter a wall, we skip it.
+    // Hvis det er en vegg går vi til neste node
     if (closestNode.isWall) continue
-    // If the closest node is at a distance of infinity,
-    // we must be trapped and should therefore stop.
+    // Hvis noden har avstand uendelig er vi fanget
     if (closestNode.distance === Infinity) return visitedNodesInOrder
+    // Hvis ikke kan vi nå besøke den
     closestNode.isVisited = true
     visitedNodesInOrder.push(closestNode)
+    // Hvis vi er på slutten så er vi ferdig
     if (closestNode === finishNode) return visitedNodesInOrder
+    //
     updateUnvisitedNeighbors(closestNode, grid)
   }
 }
 
-function sortNodesByDistance(unvisitedNodes) {
-  unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance)
+function sortNodesByDistance(unvisitedNodes, finishNode) {
+  unvisitedNodes.sort((nodeA, nodeB) => {
+    const score =
+      nodeA.distance -
+      nodeB.distance +
+      calculateDistanceToFinishNode(nodeA, finishNode) -
+      calculateDistanceToFinishNode(nodeB, finishNode)
+
+    if (score == 0) {
+      return (
+        calculateDistanceToFinishNode(nodeA, finishNode) -
+        calculateDistanceToFinishNode(nodeB, finishNode)
+      )
+    }
+    return score
+  })
+}
+
+function calculateDistanceToFinishNode(node, finishNode) {
+  return (
+    Math.abs(finishNode.row - node.row) + Math.abs(finishNode.col - node.col)
+  )
 }
 
 function updateUnvisitedNeighbors(node, grid) {
@@ -51,16 +71,4 @@ function getAllNodes(grid) {
     }
   }
   return nodes
-}
-
-// Backtracks from the finishNode to find the shortest path.
-// Only works when called *after* the dijkstra method above.
-export function getNodesInShortestPathOrder(finishNode) {
-  const nodesInShortestPathOrder = []
-  let currentNode = finishNode
-  while (currentNode !== null) {
-    nodesInShortestPathOrder.unshift(currentNode)
-    currentNode = currentNode.previousNode
-  }
-  return nodesInShortestPathOrder
 }
