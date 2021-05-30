@@ -6,15 +6,8 @@ import { greedyBestFirst } from "./algorithms/greedyBestFirst"
 
 import "./PathfindingVisualizer.css"
 
-import {
-  Grid,
-  Button,
-  ButtonGroup,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@material-ui/core"
+import { Grid } from "@material-ui/core"
+import Menu from "./components/Menu"
 
 const PathfindingVisualizer = () => {
   const [grid, setGrid] = useState([])
@@ -297,86 +290,44 @@ const PathfindingVisualizer = () => {
 
   return (
     <Grid container id="pathfinding" direction="column">
-      <Grid container item xs={12}>
-        <Grid item xs={6} align="right">
-          <FormControl style={{ width: "300px", margin: "20px" }}>
-            <InputLabel>Pick an Algorithm</InputLabel>
-            <Select
-              value={algorithm}
-              onChange={e => handleAlgorithmSelect(e.target.value)}
-              style={{ textAlign: "left" }}
-            >
-              <MenuItem value={"dijkstra"}>Dijkstra's algorithm</MenuItem>
-              <MenuItem value={"aStar"}>A* algorithm</MenuItem>
-              <MenuItem value={"greedyBestFirst"}>Greedy Best-First</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={6} align="left">
-          <FormControl style={{ width: "300px", margin: "20px" }}>
-            <InputLabel>Pick a Maze</InputLabel>
-            <Select
-              value={maze}
-              onChange={e => handleMazeSelect(e.target.value)}
-            >
-              <MenuItem value={"random"}>Basic random maze</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-      <Grid item xs={12} align="center">
-        <ButtonGroup variant="contained">
-          <Button color="secondary" onClick={addWaypoint}>
-            Add waypoint
-          </Button>
-          <Button color="primary" onClick={() => visualizeAlgorithm()}>
-            Visualize Algorithm
-          </Button>
-          <Button color="secondary" onClick={resetBoard}>
-            Reset Board
-          </Button>
-          <Button color="secondary" onClick={() => generateMaze()}>
-            Generate Maze
-          </Button>
-        </ButtonGroup>
-      </Grid>
-      <Grid item xs={12} align="center">
-        <table
-          className="grid"
-          onMouseUp={handleMouseUp}
-          style={{ margin: "30px" }}
-        >
-          {grid.map((row, rowIdx) => {
-            return (
-              <tr key={rowIdx} className="row">
-                {row.map((node, nodeIdx) => {
-                  const {
-                    row,
-                    col,
-                    isFinish,
-                    isStart,
-                    isWall,
-                    isWaypoint,
-                  } = node
-                  return (
-                    <Node
-                      key={nodeIdx}
-                      col={col}
-                      isFinish={isFinish}
-                      isStart={isStart}
-                      isWall={isWall}
-                      isWaypoint={isWaypoint}
-                      onMouseDown={(row, col) => handleMouseDown(row, col)}
-                      onMouseEnter={(row, col) => handleMouseEnter(row, col)}
-                      row={row}
-                    />
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </table>
-      </Grid>
+      <Menu
+        algorithm={algorithm}
+        maze={maze}
+        handleAlgorithmSelect={handleAlgorithmSelect}
+        handleMazeSelect={handleMazeSelect}
+        addWaypoint={addWaypoint}
+        resetBoard={resetBoard}
+        generateMaze={generateMaze}
+        visualizeAlgorithm={visualizeAlgorithm}
+      />
+      <table
+        className="grid"
+        onMouseUp={handleMouseUp}
+        style={{ margin: "30px" }}
+      >
+        {grid.map((row, rowIdx) => {
+          return (
+            <tr key={rowIdx} className="row">
+              {row.map((node, nodeIdx) => {
+                const { row, col, isFinish, isStart, isWall, isWaypoint } = node
+                return (
+                  <Node
+                    key={nodeIdx}
+                    col={col}
+                    isFinish={isFinish}
+                    isStart={isStart}
+                    isWall={isWall}
+                    isWaypoint={isWaypoint}
+                    onMouseDown={(row, col) => handleMouseDown(row, col)}
+                    onMouseEnter={(row, col) => handleMouseEnter(row, col)}
+                    row={row}
+                  />
+                )
+              })}
+            </tr>
+          )
+        })}
+      </table>
     </Grid>
   )
 }
