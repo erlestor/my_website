@@ -2,19 +2,26 @@
   width: 25px;
   height: 25px;
   outline: 1px solid rgb(175, 216, 248);
-  display: inline-block;
 }
 
 #pathfinding .node-finish {
   background-color: red;
+  outline: 1px solid red;
 }
 
 #pathfinding .node-start {
   background-color: green;
+  outline: 1px solid green;
 }
 
 #pathfinding .node-waypoint {
   background-color: blue;
+  outline: 1px solid blue;
+}
+
+#pathfinding .node-wall {
+  background-color: rgb(12, 53, 71);
+  outline: 1px solid rgb(12, 53, 71);
 }
 
 #pathfinding .node-visited {
@@ -50,10 +57,6 @@
   }
 }
 
-#pathfinding .node-wall {
-  background-color: rgb(12, 53, 71);
-}
-
 #pathfinding .node-shortest-path {
   animation-name: shortestPath;
   animation-duration: 1.5s;
@@ -79,5 +82,6 @@
   100% {
     transform: scale(1);
     background-color: rgb(255, 254, 106);
+    outline: 1px solid rgb(255, 254, 106);
   }
 }

@@ -13,14 +13,22 @@ import {
 const Menu = props => {
   const {
     algorithm,
-    handleAlgorithmSelect,
+    setAlgorithm,
     maze,
-    handleMazeSelect,
+    setMaze,
     addWaypoint,
     resetBoard,
     generateMaze,
     visualizeAlgorithm,
   } = props
+
+  const handleAlgorithmSelect = alg => {
+    setAlgorithm(alg)
+  }
+
+  const handleMazeSelect = maze => {
+    setMaze(maze)
+  }
 
   return (
     <>
@@ -46,6 +54,7 @@ const Menu = props => {
               value={maze}
               onChange={e => handleMazeSelect(e.target.value)}
             >
+              <MenuItem value={"recursive"}>Recursive division maze</MenuItem>
               <MenuItem value={"random"}>Basic random maze</MenuItem>
             </Select>
           </FormControl>

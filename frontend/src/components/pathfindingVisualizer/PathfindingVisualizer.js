@@ -9,6 +9,9 @@ import "./PathfindingVisualizer.css"
 import { Grid } from "@material-ui/core"
 import Menu from "./components/Menu"
 
+import { createRecursiveMaze } from "./mazeAlgs/recursiveDivision"
+import { createRandomMaze } from "./mazeAlgs/randomMaze"
+
 const PathfindingVisualizer = () => {
   const [grid, setGrid] = useState([])
 
@@ -18,11 +21,11 @@ const PathfindingVisualizer = () => {
 
   const [changeTile, setChangeTile] = useState("")
   const [algorithm, setAlgorithm] = useState("dijkstra")
-  const [maze, setMaze] = useState("random")
+  const [maze, setMaze] = useState("recursive")
   const [algorithmActive, setAlgorithmActive] = useState(false)
 
   useEffect(() => {
-    const grid = getInitialGrid(25, getNumberOfCols())
+    const grid = getInitialGrid(24, getNumberOfCols())
     setGrid(grid)
   }, [])
 
@@ -148,7 +151,9 @@ const PathfindingVisualizer = () => {
   }
 
   const getNumberOfCols = () => {
-    return Math.floor(window.innerWidth / 25) - 10
+    let cols = Math.floor(window.innerWidth / 25 - window.innerWidth * 0.005)
+    console.log(window.innerWidth)
+    return cols
   }
 
   function visualizeAlgorithm() {
@@ -266,25 +271,10 @@ const PathfindingVisualizer = () => {
     setGrid(newGrid)
   }
 
-  const handleAlgorithmSelect = alg => {
-    setAlgorithm(alg)
-  }
-
-  const handleMazeSelect = maze => {
-    setMaze(maze)
-  }
-
   function generateMaze() {
     const newGrid = grid.slice()
-    for (let row = 0; row < grid.length; row++) {
-      for (let col = 0; col < grid[0].length; col++) {
-        const node = newGrid[row][col]
-        if (!node.isStart && !node.isFinish && !node.isWaypoint) {
-          var random_boolean = Math.random() < 0.3
-          node.isWall = random_boolean
-        }
-      }
-    }
+    if (maze === "random") createRandomMaze(newGrid)
+    if (maze === "recursive") createRecursiveMaze(newGrid)
     setGrid(newGrid)
   }
 
@@ -293,41 +283,50 @@ const PathfindingVisualizer = () => {
       <Menu
         algorithm={algorithm}
         maze={maze}
-        handleAlgorithmSelect={handleAlgorithmSelect}
-        handleMazeSelect={handleMazeSelect}
+        setAlgorithm={setAlgorithm}
+        setMaze={setMaze}
         addWaypoint={addWaypoint}
         resetBoard={resetBoard}
         generateMaze={generateMaze}
         visualizeAlgorithm={visualizeAlgorithm}
       />
-      <table
-        className="grid"
-        onMouseUp={handleMouseUp}
-        style={{ margin: "30px" }}
-      >
-        {grid.map((row, rowIdx) => {
-          return (
-            <tr key={rowIdx} className="row">
-              {row.map((node, nodeIdx) => {
-                const { row, col, isFinish, isStart, isWall, isWaypoint } = node
-                return (
-                  <Node
-                    key={nodeIdx}
-                    col={col}
-                    isFinish={isFinish}
-                    isStart={isStart}
-                    isWall={isWall}
-                    isWaypoint={isWaypoint}
-                    onMouseDown={(row, col) => handleMouseDown(row, col)}
-                    onMouseEnter={(row, col) => handleMouseEnter(row, col)}
-                    row={row}
-                  />
-                )
-              })}
-            </tr>
-          )
-        })}
-      </table>
+      <Grid item xs={12} align="center">
+        <table
+          className="grid"
+          onMouseUp={handleMouseUp}
+          style={{ margin: "20px 0 0 0" }}
+        >
+          {grid.map((row, rowIdx) => {
+            return (
+              <tr key={rowIdx} className="row">
+                {row.map((node, nodeIdx) => {
+                  const {
+                    row,
+                    col,
+                    isFinish,
+                    isStart,
+                    isWall,
+                    isWaypoint,
+                  } = node
+                  return (
+                    <Node
+                      key={nodeIdx}
+                      col={col}
+                      isFinish={isFinish}
+                      isStart={isStart}
+                      isWall={isWall}
+                      isWaypoint={isWaypoint}
+                      onMouseDown={(row, col) => handleMouseDown(row, col)}
+                      onMouseEnter={(row, col) => handleMouseEnter(row, col)}
+                      row={row}
+                    />
+                  )
+                })}
+              </tr>
+            )
+          })}
+        </table>
+      </Grid>
     </Grid>
   )
 }
