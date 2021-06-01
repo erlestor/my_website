@@ -1,18 +1,21 @@
 // HELE IDEEN ER Å IKKE RØRE DENNE TROR JEG
 import React from "react"
 import { render } from "react-dom"
-import { Paper, Grid, Box } from "@material-ui/core"
+import { Paper, Box } from "@material-ui/core"
+
 import {
   createMuiTheme,
   ThemeProvider,
   makeStyles,
 } from "@material-ui/core/styles"
+
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   useLocation,
 } from "react-router-dom"
+
 import Nav from "./nav/Nav"
 import Footer from "./Footer"
 import Home from "./Home"
@@ -23,6 +26,7 @@ import Dolla from "./dolla/Dolla"
 import Bored from "./bored/Bored"
 import Minesweeper from "./minesweeper/Minesweeper"
 import PathfindingVisualizer from "./pathfindingVisualizer/PathfindingVisualizer"
+import SortingVisualizer from "./sortingVisualizer/SortingVisualizer"
 
 // musikk lobby
 import HomePage from "./music_lobby/HomePage"
@@ -77,6 +81,7 @@ export default function App() {
                 path="/prosjekt/pathfinding"
                 component={PathfindingVisualizer}
               />
+              <Route path="/prosjekt/sorting" component={SortingVisualizer} />
               <Route exact path="/prosjekt" component={Projects} />
               <Route exact path="/" component={Home} />
             </Box>

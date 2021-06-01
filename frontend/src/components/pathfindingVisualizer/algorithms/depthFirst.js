@@ -1,60 +1,46 @@
 export function depthFirst(grid, startNode, finishNode) {
   const visitedNodesInOrder = []
-  startNode.distance = 0
-  const unvisitedNodes = getAllNodes(grid)
-  while (!!unvisitedNodes.length) {
-    // Sorterer nodene ut ifra avstand
-    sortNodesByDistance(unvisitedNodes, finishNode)
-    // Velger den nærmeste noden
-    const closestNode = unvisitedNodes.shift()
-    // Hvis det er en vegg går vi til neste node
-    if (closestNode.isWall) continue
-    // Hvis noden har avstand uendelig er vi fanget
-    if (closestNode.distance === Infinity) return visitedNodesInOrder
-    // Hvis ikke kan vi nå besøke den
-    closestNode.isVisited = true
-    visitedNodesInOrder.push(closestNode)
-    // Hvis vi er på slutten så er vi ferdig
-    if (closestNode === finishNode) return visitedNodesInOrder
-    //
-    updateUnvisitedNeighbors(closestNode, grid)
+  startNode.isVisited = true
+  const currentPath = [startNode]
+
+  // hvis pathen er helt rom så må det bety at vi er stengt inne
+  // det skal alltid være mulig å backtracke til startNode
+  while (currentPath.length !== 0) {
+    // henter ut den siste noden i pathen og nodens naboer
+    const deepestNode = currentPath[currentPath.length - 1]
+    const neighbors = getUnvisitedNeighbors(deepestNode, grid)
+
+    // hvis det er ingen vei videre så backtracker vi ett steg
+    if (neighbors.length === 0) {
+      currentPath.pop()
+      continue
+    }
+
+    // hvis det er en vei videre finner vi den
+    const nextNode = neighbors.shift()
+
+    nextNode.isVisited = true
+    visitedNodesInOrder.push(nextNode)
+    currentPath.push(nextNode)
+
+    // Hvis vi er på finishNode er vi ferdig
+    if (nextNode === finishNode) break
   }
-}
 
-function sortNodesByDistance(unvisitedNodes, finishNode) {
-  unvisitedNodes.sort((nodeA, nodeB) => nodeA - nodeB)
-}
-
-function calculateDistanceToFinishNode(node, finishNode) {
-  return (
-    Math.abs(finishNode.row - node.row) + Math.abs(finishNode.col - node.col)
-  )
-}
-
-function updateUnvisitedNeighbors(node, grid) {
-  const unvisitedNeighbors = getUnvisitedNeighbors(node, grid)
-  for (const neighbor of unvisitedNeighbors) {
-    neighbor.distance = node.distance + 1
-    neighbor.previousNode = node
+  // fikser der visuelle
+  for (let i = 1; i < currentPath.length; i++) {
+    currentPath[i].previousNode = currentPath[i - 1]
   }
+
+  return visitedNodesInOrder
 }
 
 function getUnvisitedNeighbors(node, grid) {
   const neighbors = []
   const { col, row } = node
   if (row > 0) neighbors.push(grid[row - 1][col])
+  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1])
   if (row < grid.length - 1) neighbors.push(grid[row + 1][col])
   if (col > 0) neighbors.push(grid[row][col - 1])
-  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1])
-  return neighbors.filter(neighbor => !neighbor.isVisited)
-}
-
-function getAllNodes(grid) {
-  const nodes = []
-  for (const row of grid) {
-    for (const node of row) {
-      nodes.push(node)
-    }
-  }
-  return nodes
+  return neighbors.filter(neighbor => !neighbor.isVisited && !neighbor.isWall)
 }

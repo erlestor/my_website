@@ -1,7 +1,7 @@
 #pathfinding .node {
   width: 25px;
   height: 25px;
-  outline: 1px solid rgb(175, 216, 248);
+  outline: 0.1px solid rgb(175, 216, 248);
 }
 
 #pathfinding .node-finish {

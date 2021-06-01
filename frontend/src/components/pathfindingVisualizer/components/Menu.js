@@ -44,6 +44,8 @@ const Menu = props => {
               <MenuItem value={"dijkstra"}>Dijkstra's algorithm</MenuItem>
               <MenuItem value={"aStar"}>A* algorithm</MenuItem>
               <MenuItem value={"greedyBestFirst"}>Greedy Best-First</MenuItem>
+              <MenuItem value={"depthFirst"}>Depth First</MenuItem>
+              <MenuItem value={"breadthFirst"}>Breadth First</MenuItem>
             </Select>
           </FormControl>
         </Grid>

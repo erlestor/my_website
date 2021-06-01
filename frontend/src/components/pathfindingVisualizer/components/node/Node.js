@@ -10,8 +10,9 @@ const Node = props => {
     isStart,
     isWall,
     isWaypoint,
-    onMouseDown,
-    onMouseEnter,
+    handleMouseDown,
+    handleMouseEnter,
+    handleMouseUp,
   } = props
 
   const extraClassName = isFinish
@@ -28,8 +29,9 @@ const Node = props => {
     <td
       id={`node-${row}-${col}`}
       className={`node ${extraClassName}`}
-      onMouseDown={() => onMouseDown(row, col)}
-      onMouseEnter={() => onMouseEnter(row, col)}
+      onMouseDown={() => handleMouseDown(row, col)}
+      onMouseEnter={() => handleMouseEnter(row, col)}
+      onMouseUp={() => handleMouseUp(row, col)}
     />
   )
 }

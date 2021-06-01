@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react"
-import Node from "./components/node/Node"
-import { dijkstra, getNodesInShortestPathOrder } from "./algorithms/dijkstra"
-import { aStar } from "./algorithms/aStar"
-import { greedyBestFirst } from "./algorithms/greedyBestFirst"
-
 import "./PathfindingVisualizer.css"
 
 import { Grid } from "@material-ui/core"
+import Node from "./components/node/Node"
 import Menu from "./components/Menu"
+
+import { dijkstra, getNodesInShortestPathOrder } from "./algorithms/dijkstra"
+import { aStar } from "./algorithms/aStar"
+import { greedyBestFirst } from "./algorithms/greedyBestFirst"
+import { depthFirst } from "./algorithms/depthFirst"
 
 import { createRecursiveMaze } from "./mazeAlgs/recursiveDivision"
 import { createRandomMaze } from "./mazeAlgs/randomMaze"
@@ -44,7 +45,16 @@ const PathfindingVisualizer = () => {
     }
   }
 
-  function handleMouseUp() {
+  function handleMouseUp(row, col) {
+    if (
+      grid[row][col].isWall &&
+      (changeTile === "start" ||
+        changeTile === "finish" ||
+        changeTile === "waypoint")
+    ) {
+      console.log("fuck mæ")
+      setGrid(getNewGridWithWallToggled(row, col))
+    }
     setChangeTile("")
   }
 
@@ -61,8 +71,7 @@ const PathfindingVisualizer = () => {
         setWaypointNode({ row, col })
         break
       case "wall":
-        const newGrid = getNewGridWithWallToggled(row, col)
-        setGrid(newGrid)
+        setGrid(getNewGridWithWallToggled(row, col))
         break
     }
   }
@@ -73,7 +82,6 @@ const PathfindingVisualizer = () => {
         getNewGridWithNodeMoved(startNode, (grid, node) => {
           grid.forEach(row => row.forEach(node => (node.isStart = false)))
           node.isStart = true
-          node.isWall = false
         })
       )
   }, [startNode])
@@ -84,7 +92,6 @@ const PathfindingVisualizer = () => {
         getNewGridWithNodeMoved(finishNode, (grid, node) => {
           grid.forEach(row => row.forEach(node => (node.isFinish = false)))
           node.isFinish = true
-          node.isWall = false
         })
       )
   }, [finishNode])
@@ -95,7 +102,6 @@ const PathfindingVisualizer = () => {
         getNewGridWithNodeMoved(waypointNode, (grid, node) => {
           grid.forEach(row => row.forEach(node => (node.isWaypoint = false)))
           node.isWaypoint = true
-          node.isWall = false
         })
       )
   }, [waypointNode])
@@ -103,12 +109,8 @@ const PathfindingVisualizer = () => {
   const getNewGridWithWallToggled = (row, col) => {
     const newGrid = grid.slice()
     const node = newGrid[row][col]
-    if (!isNodeEmpty(node)) return newGrid
-    const newNode = {
-      ...node,
-      isWall: !node.isWall,
-    }
-    newGrid[row][col] = newNode
+    if (!node.isWall && !isNodeEmpty(node)) return newGrid
+    node.isWall = !node.isWall
     return newGrid
   }
 
@@ -151,8 +153,9 @@ const PathfindingVisualizer = () => {
   }
 
   const getNumberOfCols = () => {
-    let cols = Math.floor(window.innerWidth / 25 - window.innerWidth * 0.005)
     console.log(window.innerWidth)
+    let cols = Math.floor(window.innerWidth / 25 - window.innerWidth * 0.005)
+    if (cols % 2 !== 1) cols -= 1
     return cols
   }
 
@@ -187,6 +190,9 @@ const PathfindingVisualizer = () => {
     if (algorithm === "dijkstra") alg = dijkstra
     if (algorithm === "aStar") alg = aStar
     if (algorithm === "greedyBestFirst") alg = greedyBestFirst
+    if (algorithm === "depthFirst") alg = depthFirst
+    // foreløpig siden jeg uansett driter i bombe og vekting
+    if (algorithm === "breadthFirst") alg = dijkstra
 
     if (grid.some(row => row.some(node => node.isWaypoint))) {
       const wayPointNodeASD = grid[waypointNode.row][waypointNode.col]
@@ -243,6 +249,8 @@ const PathfindingVisualizer = () => {
   }
 
   function resetBoard() {
+    if (algorithmActive) return
+
     setStartNode({ row: 10, col: 4 })
     setFinishNode({ row: 10, col: 8 })
     setGrid(getInitialGrid(25, getNumberOfCols()))
@@ -266,13 +274,18 @@ const PathfindingVisualizer = () => {
   }
 
   function addWaypoint() {
+    if (algorithmActive) return
+
     const newGrid = grid.slice()
     newGrid[waypointNode.row][waypointNode.col].isWaypoint = true
     setGrid(newGrid)
   }
 
   function generateMaze() {
+    if (algorithmActive) return
+
     const newGrid = grid.slice()
+    newGrid.forEach(row => row.forEach(node => (node.isWall = false)))
     if (maze === "random") createRandomMaze(newGrid)
     if (maze === "recursive") createRecursiveMaze(newGrid)
     setGrid(newGrid)
@@ -293,8 +306,9 @@ const PathfindingVisualizer = () => {
       <Grid item xs={12} align="center">
         <table
           className="grid"
-          onMouseUp={handleMouseUp}
-          style={{ margin: "20px 0 0 0" }}
+          style={{
+            margin: "20px 0 0 0",
+          }}
         >
           {grid.map((row, rowIdx) => {
             return (
@@ -311,14 +325,15 @@ const PathfindingVisualizer = () => {
                   return (
                     <Node
                       key={nodeIdx}
+                      row={row}
                       col={col}
                       isFinish={isFinish}
                       isStart={isStart}
                       isWall={isWall}
                       isWaypoint={isWaypoint}
-                      onMouseDown={(row, col) => handleMouseDown(row, col)}
-                      onMouseEnter={(row, col) => handleMouseEnter(row, col)}
-                      row={row}
+                      handleMouseDown={handleMouseDown}
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseUp={handleMouseUp}
                     />
                   )
                 })}
