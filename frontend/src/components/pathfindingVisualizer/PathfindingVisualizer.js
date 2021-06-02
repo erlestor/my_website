@@ -26,7 +26,7 @@ const PathfindingVisualizer = () => {
   const [algorithmActive, setAlgorithmActive] = useState(false)
 
   useEffect(() => {
-    const grid = getInitialGrid(24, getNumberOfCols())
+    const grid = getInitialGrid()
     setGrid(grid)
   }, [])
 
@@ -126,7 +126,10 @@ const PathfindingVisualizer = () => {
     return !(node.isStart || node.isFinish || node.isWaypoint)
   }
 
-  const getInitialGrid = (rows, cols) => {
+  const getInitialGrid = () => {
+    const rows = getNumberOfRows()
+    const cols = getNumberOfCols()
+
     const grid = []
     for (let row = 0; row < rows; row++) {
       const currentRow = []
@@ -157,6 +160,13 @@ const PathfindingVisualizer = () => {
     let cols = Math.floor(window.innerWidth / 25 - window.innerWidth * 0.005)
     if (cols % 2 !== 1) cols -= 1
     return cols
+  }
+
+  const getNumberOfRows = () => {
+    console.log(window.innerHeight)
+     let rows = Math.floor(window.innerHeight / 25 - window.innerHeight * 0.01)
+    if (rows % 2 !== 1) rows -= 1
+    return rows
   }
 
   function visualizeAlgorithm() {
@@ -253,7 +263,7 @@ const PathfindingVisualizer = () => {
 
     setStartNode({ row: 10, col: 4 })
     setFinishNode({ row: 10, col: 8 })
-    setGrid(getInitialGrid(25, getNumberOfCols()))
+    setGrid(getInitialGrid())
 
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[0].length; col++) {

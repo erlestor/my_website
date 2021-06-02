@@ -23,6 +23,7 @@ const Menu = props => {
           style={{ textAlign: "left" }}
         >
           <MenuItem value={"bubble"}>Bubble Sort</MenuItem>
+          <MenuItem value={"merge"}>Merge Sort</MenuItem>
         </Select>
       </FormControl>
       <ButtonGroup variant="contained">

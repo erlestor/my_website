@@ -12,7 +12,7 @@ export function bubbleSort(values) {
         list[i - 1] = oldValue
 
         numberOfSwaps++
-        swaps.push(i)
+        swaps.push([i-1, i])
       }
     }
 

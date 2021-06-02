@@ -4,18 +4,21 @@ import { Grid } from "@material-ui/core"
 import Menu from "./Menu"
 
 import { bubbleSort } from "./algs/bubbleSort"
+import { mergeSort } from "./algs/mergeSort"
 
 const SortingVisualizer = () => {
-  const [alg, setAlg] = useState("bubble")
+  const [alg, setAlg] = useState("merge")
   const [values, setValues] = useState([])
-
+  const [numberOfValues, setNumberOfValues] = useState(40)
+  
   useEffect(() => {
     scrambleValues()
   }, [])
 
   const scrambleValues = () => {
     const newValues = []
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < numberOfValues; i++) {
+      // 1 - 100 (inkludert begge)
       const randomInt = Math.floor(Math.random() * 100) + 1
       newValues.push(randomInt)
     }
@@ -24,23 +27,26 @@ const SortingVisualizer = () => {
 
   const sortValues = () => {
     const speed = 10
-    const swaps = bubbleSort(values)
-    console.log(swaps.length)
+    const newValues = values
+    let swaps = []
+    if (alg === "bubble") swaps = bubbleSort(values)
+    if (alg === "merge") swaps = mergeSort(values)
 
     for (let n = 0; n < swaps.length; n++) {
-      const i = swaps[n]
-      const i1 = i - 1
-      const i2 = i
+      const i1 = swaps[n][0]
+      const i2 = swaps[n][1]
       setTimeout(() => {
         colorRed(i1, i2)
       }, n * 3 * speed)
       setTimeout(() => {
-        switchValues(i1, i2)
+        switchHeights(i1, i2)
+        switchValues(newValues, i1, i2)
       }, n * 3 * speed + speed)
       setTimeout(() => {
         colorNormal(i1, i2)
       }, n * 3 * speed + 2 * speed)
     }
+    setValues(newValues)
   }
 
   const colorRed = (i1, i2) => {
@@ -53,12 +59,21 @@ const SortingVisualizer = () => {
     document.getElementById(`value-${i2}`).className = "value"
   }
 
-  const switchValues = (i1, i2) => {
-    const newValues = values.slice()
-    const oldValue = newValues[i1]
-    newValues[i1] = newValues[i2]
-    newValues[i2] = oldValue
-    setValues(newValues)
+  const switchHeights = (i1, i2) => {
+    const h1 = document.getElementById(`value-${i1}`).style.height
+    const h2 = document.getElementById(`value-${i2}`).style.height
+    document.getElementById(`value-${i1}`).style.height = h2
+    document.getElementById(`value-${i2}`).style.height = h1
+  }
+
+  const switchValues = (values, i1, i2) => {
+    const oldValue = values[i1]
+    values[i1] = values[i2]
+    values[i2] = oldValue
+  }
+
+  const getCanvasHeight = () => {
+    return Math.floor(window.innerHeight - 200)
   }
 
   return (
@@ -70,9 +85,9 @@ const SortingVisualizer = () => {
         setAlg={setAlg}
       />
       <Grid item xs={12} align="center">
-        <div className="container">
+        <div className="container" style={{height: `${getCanvasHeight()}px`}}>
           {values.map((val, vidx) => {
-            const height = Math.floor(val * 7)
+            const height = Math.floor(val * getCanvasHeight()/100)
             return (
               <div
                 id={`value-${vidx}`}
