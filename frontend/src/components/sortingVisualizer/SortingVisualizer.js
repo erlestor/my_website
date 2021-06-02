@@ -23,19 +23,23 @@ const SortingVisualizer = () => {
   }
 
   const sortValues = () => {
+    const speed = 10
     const swaps = bubbleSort(values)
-    console.log(swaps)
+    console.log(swaps.length)
+
     for (let n = 0; n < swaps.length; n++) {
       const i = swaps[n]
+      const i1 = i - 1
+      const i2 = i
       setTimeout(() => {
-        colorRed(i - 1, i)
-      }, n * 3000)
+        colorRed(i1, i2)
+      }, n * 3 * speed)
       setTimeout(() => {
-        switchValues(i - 1, i)
-      }, n * 3000 + 1000)
+        switchValues(i1, i2)
+      }, n * 3 * speed + speed)
       setTimeout(() => {
-        colorNormal(i - 1, i)
-      }, n * 3000 + 2000)
+        colorNormal(i1, i2)
+      }, n * 3 * speed + 2 * speed)
     }
   }
 
@@ -50,10 +54,10 @@ const SortingVisualizer = () => {
   }
 
   const switchValues = (i1, i2) => {
-    const newValues = (values.slice()[(newValues[0], newValues[1])] = [
-      newValues[1],
-      newValues[0],
-    ])
+    const newValues = values.slice()
+    const oldValue = newValues[i1]
+    newValues[i1] = newValues[i2]
+    newValues[i2] = oldValue
     setValues(newValues)
   }
 
@@ -67,12 +71,11 @@ const SortingVisualizer = () => {
       />
       <Grid item xs={12} align="center">
         <div className="container">
-          {values.map(val => {
+          {values.map((val, vidx) => {
             const height = Math.floor(val * 7)
-            const index = values.indexOf(val)
             return (
               <div
-                id={`value-${index}`}
+                id={`value-${vidx}`}
                 className="value"
                 style={{ height: height }}
               />

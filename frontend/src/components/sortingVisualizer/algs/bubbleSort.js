@@ -1,10 +1,9 @@
 export function bubbleSort(values) {
-  let numberOfSwaps = 1
-  const swaps = []
-  const list = values.slice()
+  let list = values.slice()
+  let swaps = []
 
-  while (numberOfSwaps > 0) {
-    numberOfSwaps = 0
+  while (true) {
+    let numberOfSwaps = 0
 
     for (let i = 1; i < list.length; i++) {
       if (list[i - 1] > list[i]) {
@@ -16,6 +15,8 @@ export function bubbleSort(values) {
         swaps.push(i)
       }
     }
+
+    if (numberOfSwaps === 0) break
   }
 
   return swaps
