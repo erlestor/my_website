@@ -32,9 +32,8 @@ const Menu = props => {
 
   return (
     <>
-      <Grid container item xs={12}>
-        <Grid item xs={6} align="right">
-          <FormControl style={{ width: "200px", margin: "0 30px 20px 0" }}>
+      <Grid container item xs={12} justify="center" align="center" direction="row" style={{marginTop: "-20px"}}>
+          <FormControl style={{ width: "200px" }}>
             <InputLabel>Pick an Algorithm</InputLabel>
             <Select
               value={algorithm}
@@ -48,8 +47,6 @@ const Menu = props => {
               <MenuItem value={"breadthFirst"}>Breadth First</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={6} align="left">
           <FormControl style={{ width: "200px" }}>
             <InputLabel>Pick a Maze</InputLabel>
             <Select
@@ -60,9 +57,6 @@ const Menu = props => {
               <MenuItem value={"random"}>Basic random maze</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
-      </Grid>
-      <Grid item xs={12} align="center">
         <ButtonGroup variant="contained">
           <Button color="secondary" onClick={addWaypoint}>
             Add waypoint
