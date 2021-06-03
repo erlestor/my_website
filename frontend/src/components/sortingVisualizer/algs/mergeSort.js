@@ -1,40 +1,62 @@
+import { bubbleSort } from "./bubbleSort"
+
 export function mergeSort(values) {
-    const swaps = []
-    sort(values.slice(), swaps, 0)
-    return swaps
+  const swaps = []
+  sort(values.slice(), swaps, 0)
+  return swaps
 }
 
-const sort = (a, swaps, index) => {
-    // hvis vi bare har en verdi avslutter vi rekursjonen
-    if (a.length < 2) return a
-    // finner midtpunktet
-    const middle = Math.floor(a.length / 2)
-    const left_a = a.slice(0, middle)
-    const right_a = a.slice(middle, a.length)
-    const sorted_left = sort(left_a, swaps, index)
-    const sorted_right = sort(right_a, swaps, index+middle)
-    return mergeArrays(sorted_left, sorted_right, swaps, index)
+const sort = (a, swaps, idx) => {
+  // hvis vi bare har en verdi avslutter vi rekursjonen
+  if (a.length < 2) return a
+  // finner midtpunktet
+  const middle = Math.floor(a.length / 2)
+  const left_a = a.slice(0, middle)
+  const right_a = a.slice(middle, a.length)
+  const sorted_left = sort(left_a, swaps, idx)
+  const sorted_right = sort(right_a, swaps, idx + middle)
+  return mergeArrays(sorted_left, sorted_right, swaps, idx)
 }
 
-const mergeArrays = (a, b, swaps, index) => {
-// her er index starten på a i forhold til selve listens
+const mergeArrays = (a, b, swaps, idx) => {
+  // idx er startpunktet (index) til dette segmentet i den orginale listen
   const c = []
 
-  let n_swaps = 0
-  while (a.length && b.length) {
-    if (a[0] > b[0]) {
-    c.push(b.shift())
-    swaps.push([index + n_swaps, index +n_swaps +  a.length])
-    n_swaps++
+  // FANT PROBLEMET:
+  // preIndices og postIndices tilsvarer bare ny posisjon og gammel posisjon
+  // man kan ikke bare swappe den nye og den gamle for å få riktig resultat
+
+  // FORSLAG TIL LØSNING:
+  // ikke endre preIndices og postIndices
+  // heller regne ut hvilke swaps som trengs for å bytte alle verdiene når c er ferdig lagd
+
+  let a_idx = 0
+  let b_idx = 0
+  while (a_idx < a.length && b_idx < b.length) {
+    if (a[a_idx] > b[b_idx]) {
+      c.push(b[b_idx])
+      b_idx++
     } else {
-    c.push(a.shift())
+      c.push(a[a_idx])
+      a_idx++
     }
   }
 
   //if we still have values, let's add them at the end of `c`
-  while (b.length) {
-    c.push(b.shift())
-    b++
+  while (a_idx < a.length) {
+    c.push(a[a_idx])
+    a_idx++
+  }
+  while (b_idx < b.length) {
+    c.push(b[b_idx])
+    b_idx++
+  }
+
+  // her kalkuleres riktige swaps
+  const newSwaps = bubbleSort(a.concat(b))
+  for (let i = 0; i < newSwaps.length; i++) {
+    const swap = newSwaps[i]
+    swaps.push([swap[0] + idx, swap[1] + idx])
   }
 
   return c

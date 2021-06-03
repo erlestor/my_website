@@ -1,5 +1,4 @@
 #sorting .container {
-  width: 1000px;
   border: 3px solid black;
   margin-top: 30px;
   display: flex;
@@ -15,4 +14,8 @@
 
 #sorting .switching {
   background-color: rgb(158, 35, 35);
+}
+
+#sorting .pivot {
+  background-color: rgb(28, 133, 28);
 }

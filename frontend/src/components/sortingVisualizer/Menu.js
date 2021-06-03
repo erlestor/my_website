@@ -24,6 +24,8 @@ const Menu = props => {
         >
           <MenuItem value={"bubble"}>Bubble Sort</MenuItem>
           <MenuItem value={"merge"}>Merge Sort</MenuItem>
+          <MenuItem value={"quick"}>Quick Sort</MenuItem>
+          <MenuItem value={"heap"}>Heap Sort</MenuItem>
         </Select>
       </FormControl>
       <ButtonGroup variant="contained">
