@@ -1,5 +1,3 @@
-import { bubbleSort } from "./bubbleSort"
-
 export function mergeSort(values) {
   const swaps = []
   const a = values.slice()
