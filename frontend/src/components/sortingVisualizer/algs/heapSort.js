@@ -42,6 +42,8 @@ function heapify(arr, n, i, swaps) {
     arr[i] = arr[largest]
     arr[largest] = swap
 
+    swaps.push([i, largest])
+
     // Recursively heapify the affected sub-tree
     heapify(arr, n, largest, swaps)
   }

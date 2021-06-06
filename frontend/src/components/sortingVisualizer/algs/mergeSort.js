@@ -2,7 +2,8 @@ import { bubbleSort } from "./bubbleSort"
 
 export function mergeSort(values) {
   const swaps = []
-  sort(values.slice(), swaps, 0)
+  const a = values.slice()
+  sort(a, swaps, 0)
   return swaps
 }
 
@@ -52,11 +53,10 @@ const mergeArrays = (a, b, swaps, idx) => {
     b_idx++
   }
 
-  // her kalkuleres riktige swaps
-  const newSwaps = bubbleSort(a.concat(b))
-  for (let i = 0; i < newSwaps.length; i++) {
-    const swap = newSwaps[i]
-    swaps.push([swap[0] + idx, swap[1] + idx])
+  // hvordan få riktige swaps
+  // - vi lagrer istedet segmenter som blir merget
+  for (let i = 0; i < c.length; i++) {
+    swaps.push([idx + i, c[i]])
   }
 
   return c

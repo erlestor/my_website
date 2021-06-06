@@ -32,6 +32,7 @@ const SortingVisualizer = () => {
       0.1,
       200 / values.length / speed_multiplier
     )
+
     const newValues = values.slice()
     let swaps = []
     if (alg === "bubble") swaps = bubbleSort(values)
@@ -42,8 +43,11 @@ const SortingVisualizer = () => {
     for (let n = 0; n < swaps.length; n++) {
       const i1 = swaps[n][0]
       const i2 = swaps[n][1]
+      const idx = swaps[n][0]
+      const newVal = swaps[n][1]
+
       setTimeout(() => {
-        if (swaps[n - 1].length > 2) {
+        if (n > 0 && swaps[n - 1].length > 2) {
           const old_pivot_idx = swaps[n - 1][2]
           changeClass([old_pivot_idx], "value")
         }
@@ -51,24 +55,35 @@ const SortingVisualizer = () => {
           const pivot_idx = swaps[n][2]
           changeClass([pivot_idx], "value pivot")
         }
-        changeClass([i1, i2], "value switching")
+        alg === "merge"
+          ? changeClass([idx], "value switching")
+          : changeClass([i1, i2], "value switching")
       }, n * 3 * time_per_action)
       setTimeout(() => {
-        swapValues(i1, i2)
+        alg === "merge" ? setValue(newValues, idx, newVal) : swapValues(i1, i2)
       }, n * 3 * time_per_action + time_per_action)
       setTimeout(() => {
-        changeClass([i1, i2], "value")
+        alg === "merge"
+          ? changeClass([idx], "value")
+          : changeClass([i1, i2], "value")
       }, n * 3 * time_per_action + 2 * time_per_action)
     }
     setValues(newValues)
-    // const newValues = heapSort(values)
-    // setValues(newValues)
   }
 
   const changeClass = (indices, className) => {
-    for (let i = 0; i < indices.length; i++) {
-      document.getElementById(`value-${indices[i]}`).className = className
+    for (let n = 0; n < indices.length; n++) {
+      document.getElementById(`value-${indices[n]}`).className = className
     }
+  }
+
+  const setValue = (values, i, newVal) => {
+    // bytter verdi
+    values[i] = newVal
+
+    // bytter høyde
+    const newHeight = Math.floor((newVal * getCanvasHeight()) / 100)
+    document.getElementById(`value-${i}`).style.height = `${newHeight}px`
   }
 
   const swapValues = (i1, i2) => {
