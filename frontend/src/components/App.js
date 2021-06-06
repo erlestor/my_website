@@ -17,10 +17,11 @@ import {
 } from "react-router-dom"
 
 import Nav from "./nav/Nav"
-import Footer from "./Footer"
-import Home from "./Home"
-import Projects from "./Projects"
+import Footer from "./misc/Footer"
+import Home from "./misc/Home"
+import Projects from "./misc/Projects"
 import Calendar from "./calendar/Calendar"
+import Counter from "./misc/Counter"
 import Todolist from "./todo/Todolist"
 import Dolla from "./dolla/Dolla"
 import Bored from "./bored/Bored"
@@ -30,7 +31,6 @@ import SortingVisualizer from "./sortingVisualizer/SortingVisualizer"
 
 // musikk lobby
 import HomePage from "./music_lobby/HomePage"
-import Counter from "./Counter"
 
 const theme = createMuiTheme({
   palette: {
@@ -40,6 +40,11 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: "#ffc857",
+    },
+  },
+  typography: {
+    h6: {
+      fontSize: "1.25rem",
     },
   },
 })
