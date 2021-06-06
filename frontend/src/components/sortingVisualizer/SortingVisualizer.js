@@ -11,6 +11,7 @@ import { heapSort } from "./algs/heapSort"
 const SortingVisualizer = () => {
   const [alg, setAlg] = useState("heap")
   const [values, setValues] = useState([])
+  const [numberOfValues, setNumberOfValues] = useState(40)
 
   useEffect(() => {
     scrambleValues()

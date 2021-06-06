@@ -14,7 +14,7 @@ export default function Home() {
         </Typography>
         <Link to="prosjekt">
           <Button variant="contained" color="primary">
-            Se PROSJEKTER istedet
+            Se PROSJEKTER istedert
           </Button>
         </Link>
       </Grid>
