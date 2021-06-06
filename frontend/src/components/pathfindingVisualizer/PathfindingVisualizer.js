@@ -62,12 +62,15 @@ const PathfindingVisualizer = () => {
     if (algorithmActive) return
     switch (changeTile) {
       case "start":
+        if (grid[row][col].isWall) break
         setStartNode({ row, col })
         break
       case "finish":
+        if (grid[row][col].isWall) break
         setFinishNode({ row, col })
         break
       case "waypoint":
+        if (grid[row][col].isWall) break
         setWaypointNode({ row, col })
         break
       case "wall":
