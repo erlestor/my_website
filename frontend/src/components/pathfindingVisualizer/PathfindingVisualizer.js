@@ -30,7 +30,7 @@ const PathfindingVisualizer = () => {
     setGrid(grid)
   }, [])
 
-  function handleMouseDown(row, col) {
+  const handleMouseDown = (row, col) => {
     if (algorithmActive) return
     if (row === startNode.row && col === startNode.col) {
       setChangeTile("start")
@@ -45,7 +45,7 @@ const PathfindingVisualizer = () => {
     }
   }
 
-  function handleMouseUp(row, col) {
+  const handleMouseUp = (row, col) => {
     if (
       grid[row][col].isWall &&
       (changeTile === "start" ||
@@ -164,7 +164,7 @@ const PathfindingVisualizer = () => {
 
   const getNumberOfRows = () => {
     console.log(window.innerHeight)
-     let rows = Math.floor(window.innerHeight / 25 - window.innerHeight * 0.01)
+    let rows = Math.floor(window.innerHeight / 25 - 10)
     if (rows % 2 !== 1) rows -= 1
     return rows
   }
@@ -206,18 +206,14 @@ const PathfindingVisualizer = () => {
 
     if (grid.some(row => row.some(node => node.isWaypoint))) {
       const wayPointNodeASD = grid[waypointNode.row][waypointNode.col]
-      const visitedNodesToWaypoint = alg(grid, startNodeASD, wayPointNodeASD)
-      const visitedNodesToFinish = alg(grid, wayPointNodeASD, finishNodeASD)
-      const shortestPathToWaypoint = getNodesInShortestPathOrder(
+      const visitedNodesInOrder = alg(
+        grid,
+        startNodeASD,
         wayPointNodeASD
-      )
-      const shortestPathToFinish = getNodesInShortestPathOrder(finishNodeASD)
-      const visitedNodesInOrder = visitedNodesToWaypoint.concat(
-        visitedNodesToFinish
-      )
-      const nodesInShortestPathOrder = shortestPathToWaypoint.concat(
-        shortestPathToFinish
-      )
+      ).concat(alg(grid, wayPointNodeASD, finishNodeASD))
+      const nodesInShortestPathOrder = getNodesInShortestPathOrder(
+        wayPointNodeASD
+      ).concat(getNodesInShortestPathOrder(finishNodeASD))
       animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder)
     } else {
       const visitedNodesInOrder = alg(grid, startNodeASD, finishNodeASD)

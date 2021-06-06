@@ -63,8 +63,8 @@ function Nav() {
             { name: "KALENDER", link: "kalender" },
             { name: "MINESWEEPER", link: "minesweeper" },
             { name: "MUSIKK LOBBY", link: "musikk-lobby" },
-            { name: "PATH FINDING", link: "pathfinding" },
-            { name: "SORTING", link: "sorting" },
+            { name: "SORTERING", link: "sorting" },
+            { name: "KORTESTE VEI", link: "pathfinding" },
           ]}
         />
         <BigDropDown
