@@ -22,7 +22,7 @@ const PathfindingVisualizer = () => {
 
   const [changeTile, setChangeTile] = useState("")
   const [algorithm, setAlgorithm] = useState("dijkstra")
-  const [maze, setMaze] = useState("recursive")
+  const [maze, setMaze] = useState("backtracker")
   const [algorithmActive, setAlgorithmActive] = useState(false)
 
   useEffect(() => {
@@ -297,6 +297,7 @@ const PathfindingVisualizer = () => {
     newGrid.forEach(row => row.forEach(node => (node.isWall = false)))
     if (maze === "random") createRandomMaze(newGrid)
     if (maze === "recursive") createRecursiveMaze(newGrid)
+    if (maze === "backtracker") createRecursiveBacktrackerMaze(newGrid)
     setGrid(newGrid)
   }
 

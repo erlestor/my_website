@@ -1,13 +1,7 @@
-import React from "react";
-import {
-  Grid,
-  Paper,
-  Typography,
-  Button,
-  ButtonGroup,
-} from "@material-ui/core";
-import DoneIcon from "@material-ui/icons/Done";
-import DeleteIcon from "@material-ui/icons/Delete";
+import React from "react"
+import { Paper, Typography, Button, ButtonGroup } from "@material-ui/core"
+import DoneIcon from "@material-ui/icons/Done"
+import DeleteIcon from "@material-ui/icons/Delete"
 
 export default function TodoItem({ todo, getTodos }) {
   function handleComplete() {
@@ -15,11 +9,11 @@ export default function TodoItem({ todo, getTodos }) {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: todo.id, completed: !todo.completed }),
-    };
+    }
     fetch("/backend/update-todo", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .then(() => getTodos());
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .then(() => getTodos())
   }
 
   function handleDelete() {
@@ -27,11 +21,11 @@ export default function TodoItem({ todo, getTodos }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: todo.id }),
-    };
+    }
     fetch("/backend/delete-todo", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .then(() => getTodos());
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .then(() => getTodos())
   }
 
   return (
@@ -70,5 +64,5 @@ export default function TodoItem({ todo, getTodos }) {
         </Button>
       </ButtonGroup>
     </Paper>
-  );
+  )
 }

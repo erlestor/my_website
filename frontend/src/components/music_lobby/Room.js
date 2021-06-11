@@ -1,86 +1,87 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { Grid, Button, Typography } from "@material-ui/core";
-import CreateRoomPage from "./CreateRoomPage";
-import MusicPlayer from "./MusicPlayer";
+import React, { useState, useEffect } from "react"
+import { useParams, useHistory } from "react-router-dom"
+import { Grid, Button, Typography } from "@material-ui/core"
+import CreateRoomPage from "./CreateRoomPage"
+import MusicPlayer from "./MusicPlayer"
 
 export default function Room(props) {
-  let history = useHistory();
-  const [votesToSkip, setVotesToSkip] = useState(2);
-  const [guestCanPause, setGuestCanPause] = useState(false);
-  const [isHost, setIsHost] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
-  const [song, setSong] = useState({});
-  const roomCode = useParams().roomCode;
+  let history = useHistory()
+  const [votesToSkip, setVotesToSkip] = useState(2)
+  const [guestCanPause, setGuestCanPause] = useState(false)
+  const [isHost, setIsHost] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false)
+  const [song, setSong] = useState({})
+  const roomCode = useParams().roomCode
 
   useEffect(() => {
-    getRoomDetails();
-    let interval = setInterval(getCurrentSong, 1000);
+    getRoomDetails()
+    let interval = setInterval(getCurrentSong, 1000)
     return () => {
-      clearInterval(interval);
-    };
-  }, []);
+      // component unmounts
+      clearInterval(interval)
+    }
+  }, [])
 
   function getRoomDetails() {
     return fetch("/room_backend/get-room" + "?code=" + roomCode)
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
-          props.leaveRoomCallback();
-          history.push("/prosjekt/musikk-lobby/");
+          props.leaveRoomCallback()
+          history.push("/prosjekt/musikk-lobby/")
         }
-        return response.json();
+        return response.json()
       })
-      .then((data) => {
-        setVotesToSkip(data.votes_to_skip);
-        setGuestCanPause(data.guest_can_pause);
-        setIsHost(data.is_host);
+      .then(data => {
+        setVotesToSkip(data.votes_to_skip)
+        setGuestCanPause(data.guest_can_pause)
+        setIsHost(data.is_host)
         if (data.is_host) {
-          authenticateSpotify();
+          authenticateSpotify()
         }
-      });
+      })
   }
 
   function authenticateSpotify() {
     fetch("/spotify/is-authenticated")
-      .then((response) => response.json())
-      .then((data) => {
-        setSpotifyAuthenticated(data.status);
-        console.log(data.status);
+      .then(response => response.json())
+      .then(data => {
+        setSpotifyAuthenticated(data.status)
+        console.log(data.status)
         if (!data.status) {
           fetch("/spotify/get-auth-url")
-            .then((response) => response.json())
-            .then((data) => {
-              window.location.replace(data.url);
-            });
+            .then(response => response.json())
+            .then(data => {
+              window.location.replace(data.url)
+            })
         }
-      });
+      })
   }
 
   function getCurrentSong() {
     fetch("/spotify/current-song")
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
-          return {};
+          return {}
         } else {
-          return response.json();
+          return response.json()
         }
       })
-      .then((data) => {
-        setSong(data);
-        console.log(data);
-      });
+      .then(data => {
+        setSong(data)
+        console.log(data)
+      })
   }
 
   function leaveButtonPressed() {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-    };
-    fetch("/room_backend/leave-room", requestOptions).then((_response) => {
-      props.leaveRoomCallback();
-      history.push("/prosjekt/musikk-lobby");
-    });
+    }
+    fetch("/room_backend/leave-room", requestOptions).then(_response => {
+      props.leaveRoomCallback()
+      history.push("/prosjekt/musikk-lobby")
+    })
   }
 
   function renderSettings() {
@@ -105,7 +106,7 @@ export default function Room(props) {
           </Button>
         </Grid>
       </Grid>
-    );
+    )
   }
 
   function renderSettingsButton() {
@@ -119,11 +120,11 @@ export default function Room(props) {
           Settings
         </Button>
       </Grid>
-    );
+    )
   }
 
   if (showSettings) {
-    return renderSettings();
+    return renderSettings()
   }
   return (
     <Grid container spacing={1} justify="center" align="center">
@@ -150,5 +151,5 @@ export default function Room(props) {
         </Button>
       </Grid>
     </Grid>
-  );
+  )
 }

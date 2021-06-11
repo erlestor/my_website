@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Button,
   Grid,
@@ -10,24 +10,24 @@ import {
   RadioGroup,
   FormControlLabel,
   Collapse,
-} from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
-import Alert from "@material-ui/lab/Alert";
+} from "@material-ui/core"
+import { Link, useHistory } from "react-router-dom"
+import Alert from "@material-ui/lab/Alert"
 
 export default function CreateRoomPage(props) {
-  let history = useHistory();
+  let history = useHistory()
 
-  const [votesToSkip, setVotesToSkip] = useState(props.votesToSkip || 2);
-  const [guestCanPause, setGuestCanPause] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
+  const [votesToSkip, setVotesToSkip] = useState(props.votesToSkip || 2)
+  const [guestCanPause, setGuestCanPause] = useState(props.guestCanPause) // tror den er false hvis den er undefined
+  const [errorMsg, setErrorMsg] = useState("")
+  const [successMsg, setSuccessMsg] = useState("")
 
   function handleVotesChange(e) {
-    setVotesToSkip(e.target.value);
+    setVotesToSkip(e.target.value)
   }
 
   function handleGuestCanPauseChange(e) {
-    setGuestCanPause(e.target.value === "true" ? true : false);
+    setGuestCanPause(e.target.value === "true" ? true : false)
   }
 
   function handleRoomButtonPressed() {
@@ -38,10 +38,10 @@ export default function CreateRoomPage(props) {
         votes_to_skip: votesToSkip,
         guest_can_pause: guestCanPause,
       }),
-    };
+    }
     fetch("/room_backend/create-room", requestOptions)
-      .then((response) => response.json())
-      .then((data) => history.push("/prosjekt/musikk-lobby/room/" + data.code));
+      .then(response => response.json())
+      .then(data => history.push("/prosjekt/musikk-lobby/room/" + data.code))
   }
 
   function handleUpdateButtonPressed() {
@@ -53,15 +53,15 @@ export default function CreateRoomPage(props) {
         guest_can_pause: guestCanPause,
         code: props.roomCode,
       }),
-    };
-    fetch("/room_backend/update-room", requestOptions).then((response) => {
+    }
+    fetch("/room_backend/update-room", requestOptions).then(response => {
       if (response.ok) {
-        setSuccessMsg("Room updated successfully!");
+        setSuccessMsg("Room updated successfully!")
       } else {
-        setErrorMsg("Error updating room...");
+        setErrorMsg("Error updating room...")
       }
-      props.updateCallback();
-    });
+      props.updateCallback()
+    })
   }
 
   function renderCreateButtons() {
@@ -87,7 +87,7 @@ export default function CreateRoomPage(props) {
           </Button>
         </Grid>
       </Grid>
-    );
+    )
   }
 
   function renderUpdateButtons() {
@@ -101,7 +101,7 @@ export default function CreateRoomPage(props) {
           Update Room
         </Button>
       </Grid>
-    );
+    )
   }
 
   return (
@@ -112,7 +112,7 @@ export default function CreateRoomPage(props) {
             <Alert
               severity="success"
               onClose={() => {
-                setSuccessMsg("");
+                setSuccessMsg("")
               }}
             >
               {successMsg}
@@ -121,7 +121,7 @@ export default function CreateRoomPage(props) {
             <Alert
               severity="error"
               onClose={() => {
-                setErrorMsg("");
+                setErrorMsg("")
               }}
             >
               {errorMsg}
@@ -142,7 +142,7 @@ export default function CreateRoomPage(props) {
           <RadioGroup
             row
             defaultValue={
-              props.guestCanPause ? props.guestCanPause.toString() : "true"
+              guestCanPause !== undefined ? guestCanPause.toString() : "true"
             }
             onChange={handleGuestCanPauseChange}
           >
@@ -180,5 +180,5 @@ export default function CreateRoomPage(props) {
       </Grid>
       {props.update ? renderUpdateButtons() : renderCreateButtons()}
     </Grid>
-  );
+  )
 }
