@@ -21,9 +21,10 @@ const PathfindingVisualizer = () => {
   const [waypointNode, setWaypointNode] = useState({ row: 5, col: 7 })
 
   const [changeTile, setChangeTile] = useState("")
-  const [algorithm, setAlgorithm] = useState("dijkstra")
-  const [maze, setMaze] = useState("backtracker")
   const [algorithmActive, setAlgorithmActive] = useState(false)
+
+  const [algorithm, setAlgorithm] = useState("dijkstra")
+  const [maze, setMaze] = useState("recursive")
 
   useEffect(() => {
     const grid = getInitialGrid()

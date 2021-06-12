@@ -10,8 +10,8 @@ const Minesweeper = () => {
   const [board, setBoard] = useState([])
   const [gameOver, setGameOver] = useState(false)
 
-  // gjemt tall som jeg endrer for å oppdatere board, helt ræva løsning, men gidder ikke redux
-  const [bullshit, setBullshit] = useState(0)
+  const [numberOfMines, setNumberOfMines] = useState(10)
+  const [showStartOptions, setShowStartOptions] = useState(true)
 
   function createBoard(boardSize, numberOfMines) {
     const board = []
@@ -50,63 +50,31 @@ const Minesweeper = () => {
     return positions
   }
 
-  function revealTile(tile) {
-    if (tile.status !== "hidden") {
-      return
-    }
+  function revealTile(x, y) {
+    const newBoard = board.slice()
+    const tile = newBoard[y * BOARD_SIZE + x]
+
+    if (tile.status !== "hidden") return
 
     if (tile.mine) {
       tile.status = "mine"
-      setBullshit(bullshit + 1)
       return
     }
-
     tile.status = "number"
 
-    const adjacentTiles = nearbyTiles(tile)
+    const adjacentTiles = nearbyTiles(newBoard, tile)
     const mines = adjacentTiles.filter(tile => tile.mine)
 
     if (mines.length === 0) {
-      adjacentTiles.forEach(t => revealTile(t))
+      adjacentTiles.forEach(t => revealTile(t.x, t.y))
     } else {
       tile.text = mines.length
     }
 
-    // tester å tving rerender
-    setBullshit(bullshit + 1)
+    setBoard(newBoard)
   }
 
-  function markTile(tile) {
-    if (tile.status !== "hidden" && tile.status !== "marked") {
-      return
-    }
-
-    if (tile.status === "marked") {
-      tile.status = "hidden"
-      return
-    }
-
-    tile.status = "marked"
-  }
-
-  function listMinesLeft() {
-    const markedTilesCount = board.filter(tile => tile.status === "marked")
-      .length
-
-    setSubtext(`Mines left:  ${value - markedTilesCount}`)
-    setBoard(board)
-  }
-
-  // hjelpefunksjoner
-  function positionMatch(a, b) {
-    return a.x === b.x && a.y === b.y
-  }
-
-  function randomNumber(size) {
-    return Math.floor(Math.random() * size)
-  }
-
-  function nearbyTiles({ x, y }) {
+  function nearbyTiles(board, { x, y }) {
     const tiles = []
 
     for (let yOffset = -1; yOffset <= 1; yOffset++) {
@@ -123,6 +91,38 @@ const Minesweeper = () => {
     }
 
     return tiles
+  }
+
+  function markTile(x, y) {
+    const newBoard = board.slice()
+    const tile = newBoard[y * 10 + x]
+
+    if (tile.status !== "hidden" && tile.status !== "marked") return
+
+    if (tile.status === "marked") {
+      tile.status = "hidden"
+      return
+    }
+    tile.status = "marked"
+
+    setBoard(newBoard)
+  }
+
+  function listMinesLeft() {
+    const markedTilesCount = board.filter(tile => tile.status === "marked")
+      .length
+
+    setSubtext(`Mines left:  ${numberOfMines - markedTilesCount}`)
+    setBoard(board)
+  }
+
+  // hjelpefunksjoner
+  function positionMatch(a, b) {
+    return a.x === b.x && a.y === b.y
+  }
+
+  function randomNumber(size) {
+    return Math.floor(Math.random() * size)
   }
 
   function checkGameEnd() {
@@ -143,8 +143,6 @@ const Minesweeper = () => {
         if (tile.mine) revealTile(tile)
       })
     }
-
-    setBullshit(bullshit + 1)
   }
 
   function checkWin() {
@@ -159,13 +157,9 @@ const Minesweeper = () => {
     return board.some(tile => tile.status === "mine")
   }
 
-  // teste slider
-  const [value, setValue] = useState(10)
-  const [showStartOptions, setShowStartOptions] = useState(true)
-
   const handleStartButton = () => {
-    setBoard(createBoard(BOARD_SIZE, value))
-    setSubtext("Mines left: " + value)
+    setBoard(createBoard(BOARD_SIZE, numberOfMines))
+    setSubtext("Mines left: " + numberOfMines)
     setShowStartOptions(false)
   }
 
@@ -190,19 +184,20 @@ const Minesweeper = () => {
           >
             <Slider
               marks
-              value={typeof value === "number" ? value : 10}
+              value={typeof numberOfMines === "number" ? numberOfMines : 10}
               step={1}
               min={1}
               max={20}
               valueLabelDisplay="auto"
               onChange={(event, newValue) => {
-                setValue(newValue)
+                setNumberOfMines(newValue)
               }}
             />
             <Typography
               style={{ margin: "20px 0 20px 0", textAlign: "center" }}
             >
-              Mines chosen: {typeof value === "number" ? value : 10}
+              Mines chosen:{" "}
+              {typeof numberOfMines === "number" ? numberOfMines : 10}
             </Typography>
             <Button
               variant="contained"
@@ -228,29 +223,30 @@ const Minesweeper = () => {
             Restart
           </Button>
         )}
-        <div className="board">
-          {board.map(tile => (
-            <div
-              className={tile.status}
-              onClick={() => {
-                if (!gameOver) {
-                  revealTile(tile)
-                  checkGameEnd()
-                }
-              }}
-              onContextMenu={e => {
-                e.preventDefault()
-                if (!gameOver) {
-                  markTile(tile)
-                  listMinesLeft()
-                }
-              }}
-            >
-              {tile.text}
-            </div>
-          ))}
-        </div>
-        <div style={{ display: "none" }}>{bullshit}</div>
+        {!showStartOptions && (
+          <div className="board">
+            {board.map(tile => (
+              <div
+                className={tile.status}
+                onClick={() => {
+                  if (!gameOver) {
+                    revealTile(tile.x, tile.y)
+                    checkGameEnd()
+                  }
+                }}
+                onContextMenu={e => {
+                  e.preventDefault()
+                  if (!gameOver) {
+                    markTile(tile.x, tile.y)
+                    listMinesLeft()
+                  }
+                }}
+              >
+                {tile.text}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

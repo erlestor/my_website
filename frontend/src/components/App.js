@@ -1,25 +1,18 @@
 // HELE IDEEN ER Å IKKE RØRE DENNE TROR JEG
 import React from "react"
 import { render } from "react-dom"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+
 import { Paper, Box } from "@material-ui/core"
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles"
 
-import {
-  createMuiTheme,
-  ThemeProvider,
-  makeStyles,
-} from "@material-ui/core/styles"
-
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useLocation,
-} from "react-router-dom"
+import styles from "./App.module.css"
 
 import Nav from "./nav/Nav"
 import Footer from "./misc/Footer"
 import Home from "./misc/Home"
 import Projects from "./misc/Projects"
+import Websites from "./misc/Websites"
 import Calendar from "./calendar/Calendar"
 import Counter from "./misc/Counter"
 import Todolist from "./todo/Todolist"
@@ -49,33 +42,15 @@ const theme = createMuiTheme({
   },
 })
 
-const useStyles = makeStyles({
-  wrapper: {
-    width: "100vw",
-    height: "100%",
-    position: "fixed",
-    overflowY: "auto",
-    overflowX: "hidden",
-    display: "flex",
-    flexDirection: "column",
-  },
-  body: {
-    paddingTop: "40px",
-    paddingBottom: "40px",
-  },
-})
-
 export default function App() {
-  const classes = useStyles()
-
   return (
     <Router>
       <Switch>
         <Route path="/prosjekt/dolla" component={Dolla} />
         <ThemeProvider theme={theme}>
-          <Paper square className={classes.wrapper}>
+          <Paper square className={styles.wrapper}>
             <Nav />
-            <Box className={classes.body}>
+            <Box className={styles.body}>
               <Route path="/prosjekt/kalender" component={Calendar} />
               <Route path="/prosjekt/musikk-lobby" component={HomePage} />
               <Route path="/prosjekt/todolist" component={Todolist} />
@@ -88,6 +63,7 @@ export default function App() {
               />
               <Route path="/prosjekt/sorting" component={SortingVisualizer} />
               <Route exact path="/prosjekt" component={Projects} />
+              <Route exact path="/nettsteder" component={Websites} />
               <Route exact path="/" component={Home} />
             </Box>
             <Footer />

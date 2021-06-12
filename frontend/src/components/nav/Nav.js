@@ -57,14 +57,14 @@ function Nav() {
           name="PROSJEKT"
           link="prosjekt"
           items={[
-            { name: "COUNTER", link: "counter" },
-            { name: "I'M BORED", link: "bored" },
-            { name: "TODOLISTE", link: "todolist" },
-            { name: "KALENDER", link: "kalender" },
-            { name: "MINESWEEPER", link: "minesweeper" },
-            { name: "MUSIKK LOBBY", link: "musikk-lobby" },
-            { name: "SORTERING", link: "sorting" },
             { name: "KORTESTE VEI", link: "pathfinding" },
+            { name: "SORTERING", link: "sorting" },
+            { name: "MUSIKK LOBBY", link: "musikk-lobby" },
+            { name: "MINESWEEPER", link: "minesweeper" },
+            { name: "KALENDER", link: "kalender" },
+            { name: "TODOLISTE", link: "todolist" },
+            { name: "I'M BORED", link: "bored" },
+            { name: "COUNTER", link: "counter" },
           ]}
         />
         <BigDropDown

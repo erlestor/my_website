@@ -18,7 +18,7 @@ const prosjektBeskrivelser = [
   {
     title: "I'm Bored",
     description:
-      "Brukte eksterne API's og hvordan håndtere asynkrone hendelser i react",
+      "Bruke eksterne API's og hvordan håndtere asynkrone hendelser i react",
     link: "bored",
   },
   {
