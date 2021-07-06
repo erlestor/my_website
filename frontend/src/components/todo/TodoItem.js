@@ -2,13 +2,22 @@ import React from "react"
 import { Paper, Typography, Button, ButtonGroup } from "@material-ui/core"
 import DoneIcon from "@material-ui/icons/Done"
 import DeleteIcon from "@material-ui/icons/Delete"
+import styles from "./TodoItemStyles.module.css"
 
-export default function TodoItem({ todo, getTodos }) {
+const TodoItem = props => {
+  const { todo, getTodos, moveTodo, setMoveTodo, todoIdx } = props
+  const isSelected = todoIdx == moveTodo
+
   function handleComplete() {
     const requestOptions = {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: todo.id, completed: !todo.completed }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: todo.id,
+        completed: !todo.completed,
+      }),
     }
     fetch("/backend/update-todo", requestOptions)
       .then(response => response.json())
@@ -19,7 +28,9 @@ export default function TodoItem({ todo, getTodos }) {
   function handleDelete() {
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ id: todo.id }),
     }
     fetch("/backend/delete-todo", requestOptions)
@@ -30,20 +41,16 @@ export default function TodoItem({ todo, getTodos }) {
 
   return (
     <Paper
-      style={{
-        margin: "10px",
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "5px",
-      }}
+      className={`${styles.todo} ${isSelected ? styles.selected : ""}`}
       elevation={3}
+      onMouseDown={() => setMoveTodo(todoIdx)}
     >
       <Typography
+        className={todo.completed ? styles.completed : ""}
         variant="h6"
-        className={todo.completed ? "completed" : ""}
         style={{ marginRight: "15px" }}
       >
-        {todo.text}
+        {todoIdx} : {todo.text}
       </Typography>
       <ButtonGroup>
         <Button
@@ -66,3 +73,5 @@ export default function TodoItem({ todo, getTodos }) {
     </Paper>
   )
 }
+
+export default TodoItem

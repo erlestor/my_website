@@ -1,6 +1,6 @@
 import React from "react"
 
-import "./Node.css"
+import "./Node.scss"
 
 const Node = props => {
   const {

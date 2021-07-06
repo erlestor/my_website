@@ -1,5 +1,5 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require("path")
+const webpack = require("webpack")
 
 module.exports = {
   entry: "./src/index.js",
@@ -17,8 +17,8 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        test: /\.s?css$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.(jpe?g|png|gif|woff|woff2|eot|ttf|svg|mp4)(\?[a-z0-9=.]+)?$/,
@@ -39,4 +39,4 @@ module.exports = {
       },
     }),
   ],
-};
+}

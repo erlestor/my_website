@@ -1,7 +1,8 @@
 import React, { useState } from "react"
-import "./styles.css"
-
-import { Typography, Slider, Button } from "@material-ui/core"
+import { Typography } from "@material-ui/core"
+import "./styles.scss"
+import Menu from "./Menu"
+import GameOverMenu from "./GameOverMenu"
 
 const Minesweeper = () => {
   const BOARD_SIZE = 10
@@ -157,12 +158,6 @@ const Minesweeper = () => {
     return board.some(tile => tile.status === "mine")
   }
 
-  const handleStartButton = () => {
-    setBoard(createBoard(BOARD_SIZE, numberOfMines))
-    setSubtext("Mines left: " + numberOfMines)
-    setShowStartOptions(false)
-  }
-
   return (
     <div id="minesweeper">
       <div className="body">
@@ -173,58 +168,28 @@ const Minesweeper = () => {
           {subtext}
         </Typography>
         {showStartOptions && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              marginBottom: "50px",
-              justifyContent: "center",
-              width: "200px",
-            }}
-          >
-            <Slider
-              marks
-              value={typeof numberOfMines === "number" ? numberOfMines : 10}
-              step={1}
-              min={1}
-              max={20}
-              valueLabelDisplay="auto"
-              onChange={(event, newValue) => {
-                setNumberOfMines(newValue)
-              }}
-            />
-            <Typography
-              style={{ margin: "20px 0 20px 0", textAlign: "center" }}
-            >
-              Mines chosen:{" "}
-              {typeof numberOfMines === "number" ? numberOfMines : 10}
-            </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleStartButton}
-            >
-              Start game
-            </Button>
-          </div>
+          <Menu
+            subtext={subtext}
+            numberOfMines={numberOfMines}
+            setNumberOfMines={setNumberOfMines}
+            setBoard={setBoard}
+            setShowStartOptions={setShowStartOptions}
+            gameOver={gameOver}
+            setGameOver={setGameOver}
+            setSubtext={setSubtext}
+            createBoard={createBoard}
+          />
         )}
         {gameOver && (
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => {
-              setBoard([])
-              setShowStartOptions(true)
-              setGameOver(false)
-              setSubtext("Pick the number of mines")
-            }}
-            style={{ marginBottom: "20px" }}
-          >
-            Restart
-          </Button>
+          <GameOverMenu
+            setBoard={setBoard}
+            setShowStartOptions={setShowStartOptions}
+            setGameOver={setGameOver}
+            setSubtext={setSubtext}
+          />
         )}
         {!showStartOptions && (
-          <div className="board">
+          <div className="board" onContextMenu={e => e.preventDefault()}>
             {board.map(tile => (
               <div
                 className={tile.status}
@@ -240,6 +205,17 @@ const Minesweeper = () => {
                     markTile(tile.x, tile.y)
                     listMinesLeft()
                   }
+                }}
+                style={{
+                  color: `${
+                    tile.text === 1
+                      ? "blue"
+                      : tile.text === 2
+                      ? "green"
+                      : tile.text === 3
+                      ? "red"
+                      : ""
+                  }`,
                 }}
               >
                 {tile.text}

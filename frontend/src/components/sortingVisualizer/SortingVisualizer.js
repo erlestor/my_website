@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import "./sortingVisualizer.css"
+import "./sortingVisualizer.scss"
 import { Grid, List } from "@material-ui/core"
 import Menu from "./Menu"
 
@@ -11,13 +11,15 @@ import { heapSort } from "./algs/heapSort"
 const SortingVisualizer = () => {
   const [alg, setAlg] = useState("heap")
   const [values, setValues] = useState([])
-  const [numberOfValues, setNumberOfValues] = useState(40)
+  const [algActive, setAlgActive] = useState(false)
 
   useEffect(() => {
     scrambleValues()
   }, [])
 
   const scrambleValues = () => {
+    if (algActive) return
+
     const newValues = []
     for (let i = 0; i < getNumberOfValues(); i++) {
       // 1 - 100 (inkludert begge)
@@ -28,18 +30,33 @@ const SortingVisualizer = () => {
   }
 
   const sortValues = () => {
-    const speed_multiplier = 1
+    if (algActive) return
+    setAlgActive(true)
+
+    let speed_multiplier = 1
+
+    const newValues = values.slice()
+    let swaps = []
+    if (alg === "bubble") {
+      swaps = bubbleSort(values)
+      speed_multiplier *= 1.5
+    }
+    if (alg === "merge") {
+      swaps = mergeSort(values)
+      speed_multiplier *= 0.5
+    }
+    if (alg === "quick") {
+      swaps = quickSort(values)
+      speed_multiplier *= 0.1
+    }
+    if (alg === "heap") {
+      swaps = heapSort(values)
+    }
+
     const time_per_action = Math.max(
       0.1,
       200 / values.length / speed_multiplier
     )
-
-    const newValues = values.slice()
-    let swaps = []
-    if (alg === "bubble") swaps = bubbleSort(values)
-    if (alg === "merge") swaps = mergeSort(values)
-    if (alg === "quick") swaps = quickSort(values)
-    if (alg === "heap") swaps = heapSort(values)
 
     for (let n = 0; n < swaps.length; n++) {
       const i1 = swaps[n][0]
@@ -60,15 +77,20 @@ const SortingVisualizer = () => {
           ? changeClass([idx], "value switching")
           : changeClass([i1, i2], "value switching")
       }, n * 3 * time_per_action)
+
       setTimeout(() => {
         alg === "merge" ? setValue(newValues, idx, newVal) : swapValues(i1, i2)
       }, n * 3 * time_per_action + time_per_action)
+
       setTimeout(() => {
         alg === "merge"
           ? changeClass([idx], "value")
           : changeClass([i1, i2], "value")
       }, n * 3 * time_per_action + 2 * time_per_action)
     }
+    setTimeout(() => {
+      setAlgActive(false)
+    }, time_per_action * ((swaps.length - 1) * 3 + 3))
     setValues(newValues)
   }
 
@@ -114,7 +136,7 @@ const SortingVisualizer = () => {
     // return 2
   }
 
-  const handleValueClick = el => {
+  const handleValueClick = (el) => {
     if (el.className === "value") el.className = "value switching"
     else if (el.className === "value switching") el.className = "value"
   }
@@ -142,7 +164,7 @@ const SortingVisualizer = () => {
                 id={`value-${vidx}`}
                 className="value"
                 style={{ height: height }}
-                onClick={e => handleValueClick(e.target)}
+                onClick={(e) => handleValueClick(e.target)}
               />
             )
           })}

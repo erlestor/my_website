@@ -1,0 +1,23 @@
+#sorting {
+  .container {
+    border: 3px solid black;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .value {
+    width: 20px;
+    background-color: cyan;
+    border: 1px solid black;
+  }
+
+  .switching {
+    background-color: rgb(158, 35, 35);
+  }
+
+  .pivot {
+    background-color: rgb(28, 133, 28);
+  }
+}

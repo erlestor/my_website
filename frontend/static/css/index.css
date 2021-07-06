@@ -20,8 +20,3 @@ body {
 #app {
   width: 100%;
 }
-
-.completed {
-  text-decoration: line-through;
-  opacity: 0.5;
-}

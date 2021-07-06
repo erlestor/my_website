@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import "./PathfindingVisualizer.css"
+import "./PathfindingVisualizer.scss"
 
 import { Grid } from "@material-ui/core"
 import Node from "./components/node/Node"
@@ -111,7 +111,7 @@ const PathfindingVisualizer = () => {
   }, [waypointNode])
 
   const getNewGridWithWallToggled = (row, col) => {
-    const newGrid = grid.slice()
+    const newGrid = JSON.parse(JSON.stringify(grid))
     const node = newGrid[row][col]
     if (!node.isWall && !isNodeEmpty(node)) return newGrid
     node.isWall = !node.isWall
@@ -119,7 +119,7 @@ const PathfindingVisualizer = () => {
   }
 
   const getNewGridWithNodeMoved = (gridNode, moveNode) => {
-    const newGrid = grid.slice()
+    const newGrid = JSON.parse(JSON.stringify(grid))
     const node = newGrid[gridNode.row][gridNode.col]
     if (!isNodeEmpty(node)) return newGrid
     moveNode(newGrid, node)
@@ -263,8 +263,16 @@ const PathfindingVisualizer = () => {
 
     setStartNode({ row: 10, col: 4 })
     setFinishNode({ row: 10, col: 8 })
-    setGrid(getInitialGrid())
+    startNode.row = 10
+    startNode.col = 4
+    finishNode.row = 10
+    finishNode.col = 8
 
+    setGrid(getInitialGrid())
+    resetClassNames()
+  }
+
+  function resetClassNames() {
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[0].length; col++) {
         const node = grid[row][col]
@@ -286,20 +294,48 @@ const PathfindingVisualizer = () => {
   function addWaypoint() {
     if (algorithmActive) return
 
-    const newGrid = grid.slice()
+    const newGrid = JSON.parse(JSON.stringify(grid))
     newGrid[waypointNode.row][waypointNode.col].isWaypoint = true
     setGrid(newGrid)
   }
 
   function generateMaze() {
     if (algorithmActive) return
+    setAlgorithmActive(true)
 
-    const newGrid = grid.slice()
-    newGrid.forEach(row => row.forEach(node => (node.isWall = false)))
-    if (maze === "random") createRandomMaze(newGrid)
-    if (maze === "recursive") createRecursiveMaze(newGrid)
-    if (maze === "backtracker") createRecursiveBacktrackerMaze(newGrid)
-    setGrid(newGrid)
+    const newGrid = getGridWithoutWalls(grid)
+    resetClassNames()
+
+    let addedWallsInOrder = []
+    if (maze === "random") addedWallsInOrder = createRandomMaze(grid)
+    if (maze === "recursive") addedWallsInOrder = createRecursiveMaze(grid)
+    if (maze === "backtracker")
+      addedWallsInOrder = createRecursiveBacktrackerMaze(grid)
+
+    for (let i = 0; i < addedWallsInOrder.length; i++) {
+      const row = addedWallsInOrder[i][0]
+      const col = addedWallsInOrder[i][1]
+      newGrid[row][col].isWall = true
+
+      setTimeout(() => {
+        document.getElementById(`node-${row}-${col}`).className =
+          "node node-wall"
+      }, 5 * i)
+    }
+    setTimeout(() => {
+      setGrid(newGrid)
+      setAlgorithmActive(false)
+    }, 5 * addedWallsInOrder.length)
+  }
+
+  function getGridWithoutWalls() {
+    const newGrid = JSON.parse(JSON.stringify(grid))
+    newGrid.forEach(row =>
+      row.forEach(node => {
+        node.isWall = false
+      })
+    )
+    return newGrid
   }
 
   return (
@@ -325,26 +361,18 @@ const PathfindingVisualizer = () => {
             return (
               <tr key={rowIdx} className="row">
                 {row.map((node, nodeIdx) => {
-                  const {
-                    row,
-                    col,
-                    isFinish,
-                    isStart,
-                    isWall,
-                    isWaypoint,
-                  } = node
                   return (
                     <Node
                       key={nodeIdx}
-                      row={row}
-                      col={col}
-                      isFinish={isFinish}
-                      isStart={isStart}
-                      isWall={isWall}
-                      isWaypoint={isWaypoint}
                       handleMouseDown={handleMouseDown}
                       handleMouseEnter={handleMouseEnter}
+                      row={node.row}
+                      col={node.col}
                       handleMouseUp={handleMouseUp}
+                      isFinish={node.isFinish}
+                      isStart={node.isStart}
+                      isWall={node.isWall}
+                      isWaypoint={node.isWaypoint}
                     />
                   )
                 })}

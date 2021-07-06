@@ -14,6 +14,7 @@ export default function Todolist() {
   const [inputText, setInputText] = useState("")
   const [todos, setTodos] = useState([])
   const [filter, setFilter] = useState("all")
+  const [moveTodo, setMoveTodo] = useState(-1)
 
   useEffect(() => {
     getTodos()
@@ -21,18 +22,9 @@ export default function Todolist() {
 
   function getTodos() {
     fetch("/backend/todos")
-      .then(response => {
-        return response.json()
-      })
-      .then(data => {
-        console.log(data)
-        setTodos(data)
-      })
+      .then(response => response.json())
+      .then(data => setTodos(data))
     console.log(todos)
-  }
-
-  function handleTextChange(e) {
-    setInputText(e.target.value)
   }
 
   function handleSubmit() {
@@ -57,12 +49,18 @@ export default function Todolist() {
   }
 
   return (
-    <Grid container spacing={6} justify="center" align="center">
+    <Grid
+      container
+      spacing={6}
+      justify="center"
+      align="center"
+      onMouseUp={() => setMoveTodo(-1)}
+    >
       <Grid container item xs={12} justify="center">
         <TextField
           label="Todo"
           variant="outlined"
-          onChange={handleTextChange}
+          onChange={e => setInputText(e.target.value)}
           value={inputText}
         />
         <Button variant="contained" color="primary" onClick={handleSubmit}>
@@ -82,8 +80,14 @@ export default function Todolist() {
         </FormControl>
       </Grid>
       <Grid item>
-        {todos.filter(getPredicate()).map(todo => (
-          <TodoItem todo={todo} getTodos={getTodos} />
+        {todos.filter(getPredicate()).map((todo, todoIdx) => (
+          <TodoItem
+            todo={todo}
+            getTodos={getTodos}
+            todoIdx={todoIdx}
+            moveTodo={moveTodo}
+            setMoveTodo={setMoveTodo}
+          />
         ))}
       </Grid>
     </Grid>

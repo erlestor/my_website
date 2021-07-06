@@ -1,0 +1,16 @@
+.todo {
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  user-select: none;
+}
+
+.selected {
+  padding: 10px;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
