@@ -9,7 +9,7 @@ import { quickSort } from "./algs/quickSort"
 import { heapSort } from "./algs/heapSort"
 
 const SortingVisualizer = () => {
-  const [alg, setAlg] = useState("heap")
+  const [alg, setAlg] = useState("bubble")
   const [values, setValues] = useState([])
   const [algActive, setAlgActive] = useState(false)
 
@@ -33,25 +33,9 @@ const SortingVisualizer = () => {
     if (algActive) return
     setAlgActive(true)
 
-    let speed_multiplier = 1
-
+    let swaps = getSwapsAndSpeed()[0]
+    let speed_multiplier = getSwapsAndSpeed()[1]
     const newValues = values.slice()
-    let swaps = []
-    if (alg === "bubble") {
-      swaps = bubbleSort(values)
-      speed_multiplier *= 1.5
-    }
-    if (alg === "merge") {
-      swaps = mergeSort(values)
-      speed_multiplier *= 0.5
-    }
-    if (alg === "quick") {
-      swaps = quickSort(values)
-      speed_multiplier *= 0.1
-    }
-    if (alg === "heap") {
-      swaps = heapSort(values)
-    }
 
     const time_per_action = Math.max(
       0.1,
@@ -59,34 +43,7 @@ const SortingVisualizer = () => {
     )
 
     for (let n = 0; n < swaps.length; n++) {
-      const i1 = swaps[n][0]
-      const i2 = swaps[n][1]
-      const idx = swaps[n][0]
-      const newVal = swaps[n][1]
-
-      setTimeout(() => {
-        if (n > 0 && swaps[n - 1].length > 2) {
-          const old_pivot_idx = swaps[n - 1][2]
-          changeClass([old_pivot_idx], "value")
-        }
-        if (swaps[n].length > 2) {
-          const pivot_idx = swaps[n][2]
-          changeClass([pivot_idx], "value pivot")
-        }
-        alg === "merge"
-          ? changeClass([idx], "value switching")
-          : changeClass([i1, i2], "value switching")
-      }, n * 3 * time_per_action)
-
-      setTimeout(() => {
-        alg === "merge" ? setValue(newValues, idx, newVal) : swapValues(i1, i2)
-      }, n * 3 * time_per_action + time_per_action)
-
-      setTimeout(() => {
-        alg === "merge"
-          ? changeClass([idx], "value")
-          : changeClass([i1, i2], "value")
-      }, n * 3 * time_per_action + 2 * time_per_action)
+      animateSwap(swaps, time_per_action, newValues, n)
     }
     setTimeout(() => {
       setAlgActive(false)
@@ -94,10 +51,68 @@ const SortingVisualizer = () => {
     setValues(newValues)
   }
 
+  const getSwapsAndSpeed = () => {
+    let speed_multiplier = 1
+    let swaps = []
+
+    switch (alg) {
+      case "bubble":
+        swaps = bubbleSort(values)
+        speed_multiplier *= 1
+        break
+      case "merge":
+        swaps = mergeSort(values)
+        speed_multiplier *= 0.2
+        break
+      case "quick":
+        swaps = quickSort(values)
+        speed_multiplier *= 0.2
+        break
+      case "heap":
+        swaps = heapSort(values)
+        break
+      default:
+        break
+    }
+
+    return [swaps, speed_multiplier]
+  }
+
   const changeClass = (indices, className) => {
     for (let n = 0; n < indices.length; n++) {
       document.getElementById(`value-${indices[n]}`).className = className
     }
+  }
+
+  const animateSwap = (swaps, time_per_action, newValues, n) => {
+    const i1 = swaps[n][0]
+    const i2 = swaps[n][1]
+    const idx = swaps[n][0]
+    const newVal = swaps[n][1]
+
+    setTimeout(() => {
+      if (n > 0 && swaps[n - 1].length > 2) {
+        const old_pivot_idx = swaps[n - 1][2]
+        changeClass([old_pivot_idx], "value")
+      }
+      if (swaps[n].length > 2) {
+        const pivot_idx = swaps[n][2]
+        changeClass([pivot_idx], "value pivot")
+      }
+      alg === "merge"
+        ? changeClass([idx], "value switching")
+        : changeClass([i1, i2], "value switching")
+    }, n * 3 * time_per_action)
+
+    setTimeout(() => {
+      alg === "merge" ? setValue(newValues, idx, newVal) : swapValues(i1, i2)
+    }, n * 3 * time_per_action + time_per_action)
+
+    setTimeout(() => {
+      alg === "merge"
+        ? changeClass([idx], "value")
+        : changeClass([i1, i2], "value")
+    }, n * 3 * time_per_action + 2 * time_per_action)
   }
 
   const setValue = (values, i, newVal) => {

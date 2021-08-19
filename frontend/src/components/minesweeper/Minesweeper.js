@@ -3,6 +3,7 @@ import { Typography } from "@material-ui/core"
 import "./styles.scss"
 import Menu from "./Menu"
 import GameOverMenu from "./GameOverMenu"
+import Board from "./Board"
 
 const Minesweeper = () => {
   const BOARD_SIZE = 10
@@ -23,7 +24,7 @@ const Minesweeper = () => {
         const tile = {
           x,
           y,
-          mine: minePositions.some(mine => positionMatch(mine, { x, y })),
+          mine: minePositions.some((mine) => positionMatch(mine, { x, y })),
           status: "hidden",
           text: "",
         }
@@ -43,7 +44,7 @@ const Minesweeper = () => {
         y: randomNumber(boardSize),
       }
 
-      if (!positions.some(p => positionMatch(p, position))) {
+      if (!positions.some((p) => positionMatch(p, position))) {
         positions.push(position)
       }
     }
@@ -64,10 +65,10 @@ const Minesweeper = () => {
     tile.status = "number"
 
     const adjacentTiles = nearbyTiles(newBoard, tile)
-    const mines = adjacentTiles.filter(tile => tile.mine)
+    const mines = adjacentTiles.filter((tile) => tile.mine)
 
     if (mines.length === 0) {
-      adjacentTiles.forEach(t => revealTile(t.x, t.y))
+      adjacentTiles.forEach((t) => revealTile(t.x, t.y))
     } else {
       tile.text = mines.length
     }
@@ -110,7 +111,7 @@ const Minesweeper = () => {
   }
 
   function listMinesLeft() {
-    const markedTilesCount = board.filter(tile => tile.status === "marked")
+    const markedTilesCount = board.filter((tile) => tile.status === "marked")
       .length
 
     setSubtext(`Mines left:  ${numberOfMines - markedTilesCount}`)
@@ -130,32 +131,29 @@ const Minesweeper = () => {
     const win = checkWin()
     const lose = checkLose()
 
-    if (win || lose) {
-      setGameOver(true)
-    }
+    if (win || lose) setGameOver(true)
 
-    if (win) {
-      setSubtext("You win")
-    }
+    if (win) setSubtext("You win")
+
     if (lose) {
       setSubtext("You lose")
-      board.forEach(tile => {
+      board.forEach((tile) => {
         if (tile.status === "marked") markTile(tile)
-        if (tile.mine) revealTile(tile)
+        if (tile.mine) revealTile(tile.x, tile.y)
       })
     }
   }
 
   function checkWin() {
     return board.every(
-      tile =>
+      (tile) =>
         tile.status === "number" ||
         (tile.mine && (tile.status === "hidden" || tile.status === "marked"))
     )
   }
 
   function checkLose() {
-    return board.some(tile => tile.status === "mine")
+    return board.some((tile) => tile.status === "mine")
   }
 
   return (
@@ -189,39 +187,14 @@ const Minesweeper = () => {
           />
         )}
         {!showStartOptions && (
-          <div className="board" onContextMenu={e => e.preventDefault()}>
-            {board.map(tile => (
-              <div
-                className={tile.status}
-                onClick={() => {
-                  if (!gameOver) {
-                    revealTile(tile.x, tile.y)
-                    checkGameEnd()
-                  }
-                }}
-                onContextMenu={e => {
-                  e.preventDefault()
-                  if (!gameOver) {
-                    markTile(tile.x, tile.y)
-                    listMinesLeft()
-                  }
-                }}
-                style={{
-                  color: `${
-                    tile.text === 1
-                      ? "blue"
-                      : tile.text === 2
-                      ? "green"
-                      : tile.text === 3
-                      ? "red"
-                      : ""
-                  }`,
-                }}
-              >
-                {tile.text}
-              </div>
-            ))}
-          </div>
+          <Board
+            board={board}
+            gameOver={gameOver}
+            revealTile={revealTile}
+            checkGameEnd={checkGameEnd}
+            markTile={markTile}
+            listMinesLeft={listMinesLeft}
+          />
         )}
       </div>
     </div>

@@ -1,5 +1,7 @@
 import React, { useState } from "react"
+
 import { Grid } from "@material-ui/core"
+
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
@@ -14,7 +16,7 @@ export default function Calendar() {
 
   const [currentEvents, setCurrentEvents] = useState([])
 
-  const handleDateSelect = selectInfo => {
+  const handleDateSelect = (selectInfo) => {
     let title = prompt("Please enter a new title for your event")
     let calendarApi = selectInfo.view.calendar
 
@@ -30,7 +32,7 @@ export default function Calendar() {
     }
   }
 
-  const addEvent = event => {
+  const addEvent = (event) => {
     console.log(event.event.title)
     const requestOptions = {
       method: "POST",
@@ -43,11 +45,11 @@ export default function Calendar() {
       }),
     }
     fetch("/backend/create-event", requestOptions)
-      .then(response => response.json())
-      .then(data => console.log(data))
+      .then((response) => response.json())
+      .then((data) => console.log(data))
   }
 
-  const updateEvent = event => {
+  const updateEvent = (event) => {
     const requestOptions = {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -61,18 +63,8 @@ export default function Calendar() {
       }),
     }
     fetch("/backend/update-event", requestOptions)
-      .then(response => response.json())
-      .then(data => console.log(data))
-  }
-
-  const handleEventClick = clickInfo => {
-    setLastClickedEvent(clickInfo.event)
-    setOpenAlert(true)
-  }
-
-  const handleDeleteEvent = () => {
-    setOpenAlert(false)
-    lastClickedEvent.remove()
+      .then((response) => response.json())
+      .then((data) => console.log(data))
   }
 
   const deleteEvent = () => {
@@ -82,11 +74,21 @@ export default function Calendar() {
       body: JSON.stringify({ id: lastClickedEvent.id }),
     }
     fetch("/backend/delete-event", requestOptions)
-      .then(response => response.json())
+      .then((response) => response.json())
       .then(() => setLastClickedEvent({}))
   }
 
-  const handleEvents = events => {
+  const handleEventClick = (clickInfo) => {
+    setLastClickedEvent(clickInfo.event)
+    setOpenAlert(true)
+  }
+
+  const handleDeleteEvent = () => {
+    setOpenAlert(false)
+    lastClickedEvent.remove()
+  }
+
+  const handleEvents = (events) => {
     setCurrentEvents(events)
   }
 

@@ -10,7 +10,7 @@ import {
   ButtonGroup,
 } from "@material-ui/core"
 
-const Menu = props => {
+const Menu = (props) => {
   const {
     algorithm,
     setAlgorithm,
@@ -22,11 +22,11 @@ const Menu = props => {
     visualizeAlgorithm,
   } = props
 
-  const handleAlgorithmSelect = alg => {
+  const handleAlgorithmSelect = (alg) => {
     setAlgorithm(alg)
   }
 
-  const handleMazeSelect = maze => {
+  const handleMazeSelect = (maze) => {
     setMaze(maze)
   }
 
@@ -45,7 +45,7 @@ const Menu = props => {
           <InputLabel>Pick an Algorithm</InputLabel>
           <Select
             value={algorithm}
-            onChange={e => handleAlgorithmSelect(e.target.value)}
+            onChange={(e) => handleAlgorithmSelect(e.target.value)}
             style={{ textAlign: "left" }}
           >
             <MenuItem value={"dijkstra"}>Dijkstra's algorithm</MenuItem>
@@ -53,16 +53,6 @@ const Menu = props => {
             <MenuItem value={"greedyBestFirst"}>Greedy Best-First</MenuItem>
             <MenuItem value={"depthFirst"}>Depth First</MenuItem>
             <MenuItem value={"breadthFirst"}>Breadth First</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl style={{ width: "200px" }}>
-          <InputLabel>Pick a Maze</InputLabel>
-          <Select value={maze} onChange={e => handleMazeSelect(e.target.value)}>
-            <MenuItem value={"recursive"}>Recursive Division maze</MenuItem>
-            <MenuItem value={"backtracker"}>
-              Recursive Backtracker maze
-            </MenuItem>
-            <MenuItem value={"random"}>Basic random maze</MenuItem>
           </Select>
         </FormControl>
         <ButtonGroup variant="contained">
@@ -79,6 +69,19 @@ const Menu = props => {
             Generate Maze
           </Button>
         </ButtonGroup>
+        <FormControl style={{ width: "200px" }}>
+          <InputLabel>Pick a Maze</InputLabel>
+          <Select
+            value={maze}
+            onChange={(e) => handleMazeSelect(e.target.value)}
+          >
+            <MenuItem value={"recursive"}>Recursive Division maze</MenuItem>
+            <MenuItem value={"backtracker"}>
+              Recursive Backtracker maze
+            </MenuItem>
+            <MenuItem value={"random"}>Basic random maze</MenuItem>
+          </Select>
+        </FormControl>
       </Grid>
     </>
   )

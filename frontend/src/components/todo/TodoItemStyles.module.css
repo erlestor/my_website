@@ -1,8 +1,8 @@
 .todo {
-  margin: 10px;
+  margin: 30px;
   display: flex;
   justify-content: space-between;
-  padding: 5px;
+  padding: 10px;
   user-select: none;
 }
 

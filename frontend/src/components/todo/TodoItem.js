@@ -4,7 +4,7 @@ import DoneIcon from "@material-ui/icons/Done"
 import DeleteIcon from "@material-ui/icons/Delete"
 import styles from "./TodoItemStyles.module.css"
 
-const TodoItem = props => {
+const TodoItem = (props) => {
   const { todo, getTodos, moveTodo, setMoveTodo, todoIdx } = props
   const isSelected = todoIdx == moveTodo
 
@@ -20,8 +20,8 @@ const TodoItem = props => {
       }),
     }
     fetch("/backend/update-todo", requestOptions)
-      .then(response => response.json())
-      .then(data => console.log(data))
+      .then((response) => response.json())
+      .then((data) => console.log(data))
       .then(() => getTodos())
   }
 
@@ -34,8 +34,8 @@ const TodoItem = props => {
       body: JSON.stringify({ id: todo.id }),
     }
     fetch("/backend/delete-todo", requestOptions)
-      .then(response => response.json())
-      .then(data => console.log(data))
+      .then((response) => response.json())
+      .then((data) => console.log(data))
       .then(() => getTodos())
   }
 
@@ -50,7 +50,7 @@ const TodoItem = props => {
         variant="h6"
         style={{ marginRight: "15px" }}
       >
-        {todoIdx} : {todo.text}
+        {todo.text}
       </Typography>
       <ButtonGroup>
         <Button

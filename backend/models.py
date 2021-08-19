@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 class Event(models.Model):
-    # tror id blir autogenerert faktisk
     title = models.CharField(max_length=50, null=False)
     description = models.CharField(max_length=200, default="")    
     start = models.DateTimeField(null=False)
@@ -11,7 +10,6 @@ class Event(models.Model):
 
 
 class Todo(models.Model):
-    # tror id blir autogenerert faktisk
     text = models.CharField(max_length=50)
     completed = models.BooleanField(default=False)
 
