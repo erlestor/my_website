@@ -84,7 +84,7 @@ const PathfindingVisualizer = () => {
     if (changeTile !== "")
       setGrid(
         getNewGridWithNodeMoved(startNode, (grid, node) => {
-          grid.forEach(row => row.forEach(node => (node.isStart = false)))
+          grid.forEach((row) => row.forEach((node) => (node.isStart = false)))
           node.isStart = true
         })
       )
@@ -94,7 +94,7 @@ const PathfindingVisualizer = () => {
     if (changeTile !== "")
       setGrid(
         getNewGridWithNodeMoved(finishNode, (grid, node) => {
-          grid.forEach(row => row.forEach(node => (node.isFinish = false)))
+          grid.forEach((row) => row.forEach((node) => (node.isFinish = false)))
           node.isFinish = true
         })
       )
@@ -104,7 +104,9 @@ const PathfindingVisualizer = () => {
     if (changeTile !== "")
       setGrid(
         getNewGridWithNodeMoved(waypointNode, (grid, node) => {
-          grid.forEach(row => row.forEach(node => (node.isWaypoint = false)))
+          grid.forEach((row) =>
+            row.forEach((node) => (node.isWaypoint = false))
+          )
           node.isWaypoint = true
         })
       )
@@ -126,7 +128,7 @@ const PathfindingVisualizer = () => {
     return newGrid
   }
 
-  const isNodeEmpty = node => {
+  const isNodeEmpty = (node) => {
     return !(node.isStart || node.isFinish || node.isWaypoint)
   }
 
@@ -208,7 +210,7 @@ const PathfindingVisualizer = () => {
     // foreløpig siden jeg uansett driter i bombe og vekting
     if (algorithm === "breadthFirst") alg = dijkstra
 
-    if (grid.some(row => row.some(node => node.isWaypoint))) {
+    if (grid.some((row) => row.some((node) => node.isWaypoint))) {
       const wayPointNodeASD = grid[waypointNode.row][waypointNode.col]
       const visitedNodesInOrder = alg(
         grid,
@@ -330,8 +332,8 @@ const PathfindingVisualizer = () => {
 
   function getGridWithoutWalls() {
     const newGrid = JSON.parse(JSON.stringify(grid))
-    newGrid.forEach(row =>
-      row.forEach(node => {
+    newGrid.forEach((row) =>
+      row.forEach((node) => {
         node.isWall = false
       })
     )

@@ -75,14 +75,14 @@ function randomNumber(min, max) {
 }
 
 function randomOdd(min, max) {
-  const n = Math.floor(randomNumber(min, max) / 2) * 2 + 1
+  let n = Math.floor(randomNumber(min, max) / 2) * 2 + 1
   if (n < min) n += 2
   if (n > max) n -= 2
   return n
 }
 
 function randomEven(min, max) {
-  const n = Math.floor(randomNumber(min, max) / 2) * 2
+  let n = Math.floor(randomNumber(min, max) / 2) * 2
   if (n < min) n += 2
   if (n > max) n -= 2
   return n
